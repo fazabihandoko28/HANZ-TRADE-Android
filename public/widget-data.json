@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "ok": false,
+  "partial": true,
+  "updated": null,
+  "comparison_date": null,
+  "usd_idr": {"price": null, "previous": null, "change_pct": 0, "unit": "IDR", "source": "currency-api"},
+  "aed_idr": {"price": null, "previous": null, "change_pct": 0, "unit": "IDR", "source": "currency-api"},
+  "uae_gold_24k": {"price": null, "previous": null, "change_pct": 0, "unit": "AED/g", "source": "Dubai City of Gold / last-known-good"},
+  "antam_gold_1g": {"price": null, "previous": null, "change_pct": 0, "unit": "IDR/1g", "source": "Logam Mulia ANTAM / last-known-good"},
+  "bei_candidates": []
+}

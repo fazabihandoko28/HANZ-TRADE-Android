@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 
 public class CurrencyWidgetProvider extends AppWidgetProvider {
     public static final String ACTION_REFRESH = "com.hanztrade.app.REFRESH_WIDGET";
-    private static final String ENDPOINT = "https://hanz-trade.netlify.app/api/widget-data";
+    private static final String ENDPOINT = "https://hanz-trade.netlify.app/widget-data.json";
     private static final String PREFS = "hanz_widget_cache";
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
     private static final int GREEN = Color.rgb(45, 196, 125);
@@ -102,7 +102,7 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         conn.setConnectTimeout(15000);
         conn.setReadTimeout(15000);
         conn.setRequestProperty("Accept", "application/json");
-        conn.setRequestProperty("User-Agent", "HANZ-Trade-Android/1.3");
+        conn.setRequestProperty("User-Agent", "HANZ-Trade-Android/1.5");
         int code = conn.getResponseCode();
         if (code < 200 || code >= 300) throw new IllegalStateException("HTTP " + code);
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
