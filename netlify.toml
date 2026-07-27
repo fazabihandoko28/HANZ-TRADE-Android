@@ -1,13 +1,8 @@
 [build]
   publish = "public"
-  functions = "netlify/functions"
 
-[[redirects]]
-  from = "/api/widget-data"
-  to = "/.netlify/functions/widget-data"
-  status = 200
-
-[[redirects]]
-  from = "/widget-data.json"
-  to = "/.netlify/functions/widget-data"
-  status = 200
+[[headers]]
+  for = "/widget-data.json"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=300, must-revalidate"
