@@ -26,11 +26,12 @@ import java.util.concurrent.Executors;
 
 public class CurrencyWidgetProvider extends AppWidgetProvider {
     public static final String ACTION_REFRESH = "com.hanztrade.app.REFRESH_WIDGET";
-    private static final String DATA_URL = "https://hanz-trade.netlify.app/widget-data.json";
+    private static final String ENDPOINT = "https://hanz-trade.netlify.app/api/widget-data";
+    private static final String PREFS = "hanz_widget_cache";
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
-    private static final int UP = Color.rgb(51, 199, 119);
-    private static final int DOWN = Color.rgb(255, 92, 92);
-    private static final int FLAT = Color.rgb(145, 160, 182);
+    private static final int GREEN = Color.rgb(45, 196, 125);
+    private static final int RED = Color.rgb(255, 92, 106);
+    private static final int NEUTRAL = Color.rgb(145, 160, 182);
 
     @Override
     public void onUpdate(Context context, AppWidgetManager manager, int[] appWidgetIds) {
@@ -52,7 +53,7 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
 
     private void showLoading(Context context, AppWidgetManager manager, int id) {
         RemoteViews views = baseViews(context);
-        restoreCached(context, views);
+        applyCached(context, views);
         views.setViewVisibility(R.id.widgetProgress, View.VISIBLE);
         views.setTextViewText(R.id.widgetStatus, "Updating…");
         manager.updateAppWidget(id, views);
@@ -60,126 +61,128 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
 
     private void fetchAndUpdate(Context context, AppWidgetManager manager, int id) {
         EXECUTOR.execute(() -> {
+            RemoteViews views = baseViews(context);
             try {
-                HttpURLConnection conn = (HttpURLConnection) new URL(DATA_URL).openConnection();
-                conn.setConnectTimeout(15000);
-                conn.setReadTimeout(15000);
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setRequestProperty("User-Agent", "HANZ-TRADE-Android/1.3");
+                JSONObject root = getJson(ENDPOINT);
+                if (!root.optBoolean("ok", true)) throw new IllegalStateException("API not ready");
 
-                int status = conn.getResponseCode();
-                if (status < 200 || status >= 300) throw new IllegalStateException("HTTP " + status);
+                setMarket(views, R.id.usdIdrValue, R.id.usdIdrChange,
+                        root.getJSONObject("usd_idr"), "Rp ", 0, context, "usd");
+                setMarket(views, R.id.aedIdrValue, R.id.aedIdrChange,
+                        root.getJSONObject("aed_idr"), "Rp ", 0, context, "aed");
+                setMarket(views, R.id.uaeGoldValue, R.id.uaeGoldChange,
+                        root.getJSONObject("uae_gold_24k"), "AED ", 2, context, "uae_gold");
+                setMarket(views, R.id.antamValue, R.id.antamChange,
+                        root.getJSONObject("antam_gold_1g"), "Rp ", 0, context, "antam");
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder body = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) body.append(line);
-                reader.close();
-                conn.disconnect();
-
-                JSONObject root = new JSONObject(body.toString());
-                Metric usd = metric(root, "usd_idr");
-                Metric aed = metric(root, "aed_idr");
-                Metric uaeGold = metric(root, "uae_gold_24k");
-                Metric antam = metric(root, "antam_gold_1g");
-                String candidates = candidates(root.optJSONArray("bei_candidates"));
-                String updated = root.optString("updated", "");
-                boolean stale = root.optBoolean("stale", false);
-
-                String usdValue = "Rp " + format(usd.value, 0);
-                String aedValue = "Rp " + format(aed.value, 0);
-                String uaeValue = "AED " + format(uaeGold.value, 2) + "/g";
-                String antamValue = "Rp " + format(antam.value, 0);
-
-                context.getSharedPreferences("widget_data", Context.MODE_PRIVATE).edit()
-                        .putLong("cached_at", System.currentTimeMillis())
-                        .putString("usd_value", usdValue).putString("usd_change", changeText(usd.change))
-                        .putFloat("usd_change_n", (float) usd.change)
-                        .putString("aed_value", aedValue).putString("aed_change", changeText(aed.change))
-                        .putFloat("aed_change_n", (float) aed.change)
-                        .putString("uae_value", uaeValue).putString("uae_change", changeText(uaeGold.change))
-                        .putFloat("uae_change_n", (float) uaeGold.change)
-                        .putString("antam_value", antamValue).putString("antam_change", changeText(antam.change))
-                        .putFloat("antam_change_n", (float) antam.change)
-                        .putString("candidates", candidates)
-                        .putString("server_updated", updated)
+                JSONArray candidates = root.optJSONArray("bei_candidates");
+                String candidateText = candidateText(candidates);
+                views.setTextViewText(R.id.beiCandidates, candidateText);
+                context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+                        .putString("candidates", candidateText)
+                        .putLong("updated", System.currentTimeMillis())
                         .apply();
 
-                RemoteViews views = baseViews(context);
+                String sourceStatus = root.optBoolean("partial", false) ? "Partial data" : "Live";
+                views.setTextViewText(R.id.widgetStatus, sourceStatus + " · Updated " +
+                        new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                 views.setViewVisibility(R.id.widgetProgress, View.GONE);
-                setMetric(views, R.id.usdIdrValue, R.id.usdIdrChange, usdValue, usd.change);
-                setMetric(views, R.id.aedIdrValue, R.id.aedIdrChange, aedValue, aed.change);
-                setMetric(views, R.id.uaeGoldValue, R.id.uaeGoldChange, uaeValue, uaeGold.change);
-                setMetric(views, R.id.antamValue, R.id.antamChange, antamValue, antam.change);
-                views.setTextViewText(R.id.beiCandidates, candidates);
-                views.setTextViewText(R.id.widgetStatus, (stale ? "Cached · " : "Updated ") + new SimpleDateFormat("dd MMM HH:mm", Locale.getDefault()).format(new Date()));
                 manager.updateAppWidget(id, views);
             } catch (Exception e) {
-                RemoteViews views = baseViews(context);
+                applyCached(context, views);
                 views.setViewVisibility(R.id.widgetProgress, View.GONE);
-                restoreCached(context, views);
-                views.setTextViewText(R.id.widgetStatus, "Offline · showing last data · tap ↻");
+                views.setTextViewText(R.id.widgetStatus, "Cached/offline · tap ↻");
                 manager.updateAppWidget(id, views);
             }
         });
     }
 
-    private static Metric metric(JSONObject root, String key) {
-        JSONObject obj = root.optJSONObject(key);
-        if (obj == null) return new Metric(0, 0);
-        return new Metric(obj.optDouble("price", 0), obj.optDouble("change_pct", 0));
+    private static JSONObject getJson(String endpoint) throws Exception {
+        HttpURLConnection conn = (HttpURLConnection) new URL(endpoint).openConnection();
+        conn.setConnectTimeout(15000);
+        conn.setReadTimeout(15000);
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("User-Agent", "HANZ-Trade-Android/1.3");
+        int code = conn.getResponseCode();
+        if (code < 200 || code >= 300) throw new IllegalStateException("HTTP " + code);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder body = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) body.append(line);
+        reader.close();
+        conn.disconnect();
+        return new JSONObject(body.toString());
     }
 
-    private static String candidates(JSONArray array) {
-        if (array == null || array.length() == 0) return "No strong candidate";
-        StringBuilder out = new StringBuilder(array.length() + " Candidates · ");
-        for (int i = 0; i < array.length(); i++) {
-            if (i > 0) out.append(" · ");
-            out.append(array.optString(i));
-        }
-        return out.toString();
-    }
-
-    private static void setMetric(RemoteViews views, int valueId, int changeId, String value, double change) {
+    private void setMarket(RemoteViews views, int valueId, int changeId, JSONObject item,
+                           String prefix, int digits, Context context, String key) {
+        double price = item.optDouble("price", Double.NaN);
+        double change = item.optDouble("change_pct", 0.0);
+        boolean available = !Double.isNaN(price) && price > 0;
+        String value = available ? prefix + format(price, digits) : "Unavailable";
+        String changeText = available ? changeLabel(change) : "—";
         views.setTextViewText(valueId, value);
-        views.setTextViewText(changeId, changeText(change));
-        views.setTextColor(changeId, change > 0.0001 ? UP : change < -0.0001 ? DOWN : FLAT);
+        views.setTextViewText(changeId, changeText);
+        views.setTextColor(changeId, change > 0 ? GREEN : change < 0 ? RED : NEUTRAL);
+
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+                .putString(key + "_value", value)
+                .putString(key + "_change", changeText)
+                .putInt(key + "_color", change > 0 ? GREEN : change < 0 ? RED : NEUTRAL)
+                .apply();
     }
 
-    private void restoreCached(Context context, RemoteViews views) {
-        var prefs = context.getSharedPreferences("widget_data", Context.MODE_PRIVATE);
-        views.setTextViewText(R.id.usdIdrValue, prefs.getString("usd_value", "—"));
-        views.setTextViewText(R.id.aedIdrValue, prefs.getString("aed_value", "—"));
-        views.setTextViewText(R.id.uaeGoldValue, prefs.getString("uae_value", "—"));
-        views.setTextViewText(R.id.antamValue, prefs.getString("antam_value", "—"));
-        views.setTextViewText(R.id.beiCandidates, prefs.getString("candidates", "No strong candidate"));
-        setCachedChange(views, R.id.usdIdrChange, prefs.getString("usd_change", "—"), prefs.getFloat("usd_change_n", 0));
-        setCachedChange(views, R.id.aedIdrChange, prefs.getString("aed_change", "—"), prefs.getFloat("aed_change_n", 0));
-        setCachedChange(views, R.id.uaeGoldChange, prefs.getString("uae_change", "—"), prefs.getFloat("uae_change_n", 0));
-        setCachedChange(views, R.id.antamChange, prefs.getString("antam_change", "—"), prefs.getFloat("antam_change_n", 0));
+    private void applyCached(Context context, RemoteViews views) {
+        var p = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        applyOne(views, p, R.id.usdIdrValue, R.id.usdIdrChange, "usd");
+        applyOne(views, p, R.id.aedIdrValue, R.id.aedIdrChange, "aed");
+        applyOne(views, p, R.id.uaeGoldValue, R.id.uaeGoldChange, "uae_gold");
+        applyOne(views, p, R.id.antamValue, R.id.antamChange, "antam");
+        views.setTextViewText(R.id.beiCandidates, p.getString("candidates", "No candidates"));
     }
 
-    private static void setCachedChange(RemoteViews views, int id, String text, float change) {
-        views.setTextViewText(id, text);
-        views.setTextColor(id, change > 0.0001 ? UP : change < -0.0001 ? DOWN : FLAT);
+    private void applyOne(RemoteViews views, android.content.SharedPreferences p,
+                          int valueId, int changeId, String key) {
+        views.setTextViewText(valueId, p.getString(key + "_value", "—"));
+        views.setTextViewText(changeId, p.getString(key + "_change", "—"));
+        views.setTextColor(changeId, p.getInt(key + "_color", NEUTRAL));
     }
 
     private RemoteViews baseViews(Context context) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.currency_widget);
         Intent open = new Intent(context, MainActivity.class);
-        PendingIntent openPi = PendingIntent.getActivity(context, 0, open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent openPi = PendingIntent.getActivity(context, 0, open,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.widgetRoot, openPi);
 
         Intent refresh = new Intent(context, CurrencyWidgetProvider.class);
         refresh.setAction(ACTION_REFRESH);
-        PendingIntent refreshPi = PendingIntent.getBroadcast(context, 1, refresh, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent refreshPi = PendingIntent.getBroadcast(context, 1, refresh,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.refreshButton, refreshPi);
         return views;
     }
 
-    private static String changeText(double value) {
-        if (Math.abs(value) < 0.0001) return "— 0.00%";
-        return (value > 0 ? "▲ " : "▼ ") + format(Math.abs(value), 2) + "%";
+    private static String candidateText(JSONArray candidates) {
+        if (candidates == null || candidates.length() == 0) return "0 candidates";
+        StringBuilder tickers = new StringBuilder();
+        int limit = Math.min(candidates.length(), 4);
+        for (int i = 0; i < limit; i++) {
+            String ticker;
+            Object value = candidates.opt(i);
+            if (value instanceof JSONObject) ticker = ((JSONObject) value).optString("ticker", "");
+            else ticker = String.valueOf(value);
+            ticker = ticker.replace(".JK", "").trim().toUpperCase(Locale.US);
+            if (ticker.isEmpty()) continue;
+            if (tickers.length() > 0) tickers.append(" · ");
+            tickers.append(ticker);
+        }
+        return candidates.length() + " · " + (tickers.length() == 0 ? "candidates" : tickers);
+    }
+
+    private static String changeLabel(double change) {
+        if (Math.abs(change) < 0.005) return "— 0.00%";
+        return (change > 0 ? "▲ " : "▼ ") + format(Math.abs(change), 2) + "%";
     }
 
     private static String format(double value, int digits) {
@@ -189,11 +192,5 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
             for (int i = 0; i < digits; i++) pattern.append("0");
         }
         return new DecimalFormat(pattern.toString()).format(value);
-    }
-
-    private static class Metric {
-        final double value;
-        final double change;
-        Metric(double value, double change) { this.value = value; this.change = change; }
     }
 }

@@ -3,10 +3,11 @@
   functions = "netlify/functions"
 
 [[redirects]]
+  from = "/api/widget-data"
+  to = "/.netlify/functions/widget-data"
+  status = 200
+
+[[redirects]]
   from = "/widget-data.json"
   to = "/.netlify/functions/widget-data"
   status = 200
-  force = true
-
-[functions."widget-data"]
-  included_files = ["public/bei-candidates.json"]
