@@ -84,22 +84,19 @@ async function fetchFxResilient(diag) {
 }
 
 async function fetchFxFrankfurter() {
-  const latest = await fetchJson('https://api.frankfurter.dev/v1/latest?base=USD&symbols=IDR,AED');
-  const idr = Number(latest?.rates?.IDR);
-  const aed = Number(latest?.rates?.AED);
+  const [idrPair, aedPair] = await Promise.all([
+    fetchJson('https://api.frankfurter.dev/v2/rate/USD/IDR'),
+    fetchJson('https://api.frankfurter.dev/v2/rate/USD/AED')
+  ]);
+  const idr = Number(idrPair?.rate);
+  const aed = Number(aedPair?.rate);
   validateFx(idr, aed);
-  let prior = null;
-  try {
-    const date = dateKey(new Date(Date.now() - 86400000));
-    prior = await fetchJson(`https://api.frankfurter.dev/v1/${date}?base=USD&symbols=IDR,AED`);
-  } catch {}
-  const priorIdr = Number(prior?.rates?.IDR);
-  const priorAed = Number(prior?.rates?.AED);
+  const quoteDate = idrPair?.date ?? aedPair?.date ?? 'latest';
   return {
-    usd_idr: { price: idr, source: `Frankfurter (${latest.date ?? 'latest'})`, provider_count: 1 },
-    aed_idr: { price: idr / aed, source: `Frankfurter-derived (${latest.date ?? 'latest'})`, provider_count: 1 },
-    previous_usd_idr: priorIdr > 0 ? priorIdr : null,
-    previous_aed_idr: priorIdr > 0 && priorAed > 0 ? priorIdr / priorAed : null
+    usd_idr: { price: idr, source: `Frankfurter v2 (${quoteDate})`, provider_count: 1 },
+    aed_idr: { price: idr / aed, source: `Frankfurter v2 derived (${quoteDate})`, provider_count: 1 },
+    previous_usd_idr: null,
+    previous_aed_idr: null
   };
 }
 

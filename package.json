@@ -9,7 +9,8 @@
     "update-bei": "node scripts/update-bei-candidates.mjs",
     "test-bei": "HANZ_SELF_TEST=1 node scripts/update-bei-candidates.mjs",
     "validate-public": "node scripts/validate-public.mjs",
-    "test-all": "npm run test-widget && npm run test-bei && npm run validate-workflows" ,
+    "validate-bei": "node scripts/validate-bei.mjs",
+    "test-all": "npm run test-widget && npm run test-bei && npm run validate-public && npm run validate-bei && npm run validate-workflows" ,
     "validate-workflows": "node scripts/validate-workflows.mjs"
   }
 }

@@ -102,7 +102,7 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         conn.setConnectTimeout(15000);
         conn.setReadTimeout(15000);
         conn.setRequestProperty("Accept", "application/json");
-        conn.setRequestProperty("User-Agent", "HANZ-Trade-Android/1.5");
+        conn.setRequestProperty("User-Agent", "HANZ-Trade-Android/2.1");
         int code = conn.getResponseCode();
         if (code < 200 || code >= 300) throw new IllegalStateException("HTTP " + code);
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));

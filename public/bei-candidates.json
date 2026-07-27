@@ -1,4 +1,7 @@
 {
-  "updated": "",
+  "schema_version": 1,
+  "updated": "2026-07-27T06:36:43.313Z",
+  "status": "no-candidates",
+  "source": "last-known-good/local",
   "candidates": []
 }

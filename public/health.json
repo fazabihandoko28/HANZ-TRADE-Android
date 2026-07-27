@@ -1,13 +1,82 @@
 {
   "schema_version": 1,
   "overall": "DEGRADED",
-  "generated_at": "2026-07-27T06:05:22.601Z",
+  "generated_at": "2026-07-27T06:34:40.368Z",
   "market_data": {
-    "usd_idr": {"status":"stale","source":"verified bootstrap","price_available":true},
-    "aed_idr": {"status":"stale","source":"verified bootstrap","price_available":true},
-    "uae_gold_24k": {"status":"stale","source":"verified bootstrap","price_available":true},
-    "antam_gold_1g": {"status":"stale","source":"verified bootstrap","price_available":true}
+    "usd_idr": {
+      "status": "stale",
+      "source": "Last known good: ExchangeRate-API verified bootstrap 2026-07-27",
+      "price_available": true
+    },
+    "aed_idr": {
+      "status": "stale",
+      "source": "Last known good: USD/IDR divided by AED peg 3.6725; verified bootstrap 2026-07-27",
+      "price_available": true
+    },
+    "uae_gold_24k": {
+      "status": "stale",
+      "source": "Last known good: Dubai retail 24K verified bootstrap 2026-07-27",
+      "price_available": true
+    },
+    "antam_gold_1g": {
+      "status": "stale",
+      "source": "Last known good: Logam Mulia API verified bootstrap 2026-07-27",
+      "price_available": true
+    }
   },
-  "bei": {"status":"no-candidates","count":0,"source":"public/bei-candidates.json"},
-  "diagnostics": []
+  "bei": {
+    "status": "no-candidates",
+    "count": 0,
+    "source": "public/bei-candidates.json"
+  },
+  "diagnostics": [
+    {
+      "level": "warning",
+      "group": "FX",
+      "provider": "fetchFxFrankfurter",
+      "message": "fetch failed"
+    },
+    {
+      "level": "warning",
+      "group": "FX",
+      "provider": "fetchFxOpenErApi",
+      "message": "fetch failed"
+    },
+    {
+      "level": "warning",
+      "group": "UAE gold",
+      "provider": "fetchUaeRetailGulfNews",
+      "message": "fetch failed"
+    },
+    {
+      "level": "warning",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotGoldApi",
+      "message": "fetch failed"
+    },
+    {
+      "level": "warning",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotHargaEmas",
+      "message": "fetch failed"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOpenSourceApi",
+      "message": "fetch failed"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOfficial",
+      "message": "fetch failed"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamHargaEmasCom",
+      "message": "fetch failed"
+    }
+  ]
 }

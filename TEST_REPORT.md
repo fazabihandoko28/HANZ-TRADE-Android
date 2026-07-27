@@ -1,25 +1,25 @@
-# HANZ Trade v1.8 Test Report
+# HANZ Trade v2.1 — Verification Report
 
 ## Passed locally
-- Node.js syntax validation
-- Deterministic parsers for Frankfurter-compatible FX values
-- UAE 24K retail parser fixture
-- Gold spot USD/oz parser fixture
-- Harga-Emas.org ANTAM 1g parser fixture
-- Generic ANTAM 1g parser fixture
-- ANTAM multi-source outlier rejection
-- Candidate ticker sanitation
-- Android XML parsing
-- Existing JSON syntax
-- ZIP integrity
 
-## Live-source safeguards
-- FX: Frankfurter primary, ExchangeRate-API open endpoint fallback
-- UAE 24K: Dubai retail primary, Gold-API spot fallback, Harga-Emas.org spot fallback
-- ANTAM: Harga-Emas.org primary, HargaEmas.com fallback, official Logam Mulia fallback
-- Last-known-good retained when every live provider is unavailable
-- Per-provider diagnostics written into widget-data.json
-- Data status: verified-live, live, or stale
+- Exactly 3 GitHub workflow files exist and validate:
+  - `Build HANZ-TRADE APK`
+  - `Update HANZ market data`
+  - `Update HANZ BEI candidates`
+- All workflow YAML files parse successfully.
+- All workflow names, triggers, jobs and Ubuntu runners validate.
+- Market engine deterministic self-test passes.
+- BEI updater deterministic self-test passes.
+- Market JSON validation passes.
+- BEI JSON validation passes.
+- All Node.js scripts pass syntax checks.
+- All Android XML resources and Manifest parse successfully.
+- Widget endpoint is correctly set to `https://hanz-trade.netlify.app/widget-data.json`.
+- Android version and APK artifact name are aligned to v2.1.
+- Obsolete crashing Netlify Function was removed.
+- Existing BEI bootstrap JSON was repaired to the schema expected by the updater.
+- Full `npm run test-all` passes.
 
-## Environment limitation
-The local build environment has no external DNS access and no Android SDK. Actual internet fetches and APK compilation are therefore enforced and tested by GitHub Actions. The updater is designed to survive individual provider failures and only uses stale data when every provider in a group fails.
+## External runtime boundary
+
+This sandbox blocks outbound DNS, so live HTTP provider calls and the Android Gradle build cannot be executed here. The supplied GitHub workflows perform those steps on GitHub-hosted runners. The updater keeps last-known-good values if every live provider is temporarily unavailable.
