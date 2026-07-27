@@ -1,10 +1,13 @@
 {
-  "name": "hanz-trade-static-data",
-  "version": "1.6.0",
+  "name": "hanz-trade-data-engine",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "update-widget": "node scripts/update-widget-data.mjs",
-    "test-widget": "HANZ_SELF_TEST=1 node scripts/update-widget-data.mjs"
+    "test-widget": "HANZ_SELF_TEST=1 node scripts/update-widget-data.mjs",
+    "update-bei": "node scripts/update-bei-candidates.mjs",
+    "test-bei": "HANZ_SELF_TEST=1 node scripts/update-bei-candidates.mjs",
+    "validate-public": "node scripts/validate-public.mjs"
   }
 }

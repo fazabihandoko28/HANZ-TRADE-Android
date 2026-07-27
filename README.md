@@ -1,26 +1,17 @@
-# HANZ-TRADE Android v1.6
+# HANZ TRADE v2.0
 
-Home-screen widget displaying:
+Android home-screen widget plus resilient static data engine.
 
-- USD/IDR with daily direction and percentage
-- AED/IDR with daily direction and percentage
-- UAE Gold 24K (AED/gram) with daily direction and percentage
-- ANTAM Gold 24K 1 gram with daily direction and percentage
-- BEI strong-stock candidates
+## Public endpoints
+- `/widget-data.json` — values consumed by Android widget
+- `/health.json` — market-source health
+- `/health.html` — human-readable health page
+- `/bei-candidates.json` — candidate output
+- `/bei-health.json` — candidate workflow health
 
-## Data architecture
+## GitHub Actions
+1. **Build HANZ-TRADE APK** — builds APK only.
+2. **Update HANZ market data** — runs twice hourly, uses multiple providers and last-known-good fallback.
+3. **Update HANZ BEI candidates** — normalizes candidate output on weekdays; set repository secret `BEI_CANDIDATES_URL` to a JSON endpoint produced by the HANZ screening engine.
 
-The Android widget reads one static file:
-
-`https://hanz-trade.netlify.app/widget-data.json`
-
-GitHub Actions refreshes this file hourly. There are no Netlify Functions or Netlify Blobs.
-
-## Optional GitHub Actions secrets
-
-- `UAE_GOLD_24K_AED`: manual fallback price in AED/gram
-- `ANTAM_GOLD_1G_IDR`: manual fallback price for ANTAM 1 gram
-- `BEI_STRONG_CANDIDATES`: comma-separated tickers, e.g. `BBRI,ANTM,TLKM`
-- `BEI_CANDIDATES_URL`: optional URL containing a candidates array
-
-When a gold source fails, the updater preserves the last-known-good published value. Currency must be available from one of two independent public currency endpoints, or the workflow fails without publishing broken data.
+The market workflow fails rather than publishing empty or structurally invalid prices. Source diagnostics are visible in `health.json` and the workflow summary.

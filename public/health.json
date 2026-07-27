@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "overall": "WAITING_FIRST_LIVE_UPDATE",
+  "generated_at": null,
+  "market_data": {},
+  "bei": {"status":"no-candidates","count":0,"source":"public/bei-candidates.json"},
+  "diagnostics": []
+}

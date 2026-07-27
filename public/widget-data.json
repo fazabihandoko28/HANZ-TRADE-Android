@@ -1,12 +1,14 @@
 {
-  "schema_version": 1,
-  "ok": true,
-  "partial": false,
-  "updated": "2026-07-27T05:30:00.000Z",
-  "comparison_date": "2026-07-26",
-  "usd_idr": {"price": 17938.80, "previous": 17893.90, "change_pct": 0.25, "unit": "IDR", "source": "XE / seed"},
-  "aed_idr": {"price": 4884.63, "previous": 4872.40, "change_pct": 0.25, "unit": "IDR", "source": "derived USD/AED / seed"},
-  "uae_gold_24k": {"price": 492.75, "previous": 488.50, "change_pct": 0.87, "unit": "AED/g", "source": "Gulf News / Dubai Gold & Jewellery Group"},
-  "antam_gold_1g": {"price": 2622000, "previous": 2612000, "change_pct": 0.38, "unit": "IDR/1g", "source": "ANTAM Logam Mulia"},
-  "bei_candidates": []
+  "schema_version": 2,
+  "ok": false,
+  "partial": true,
+  "updated": null,
+  "comparison_date": null,
+  "usd_idr": {"price": null, "previous": null, "change_pct": 0, "unit": "IDR", "source": "Waiting for first verified update", "live": false, "verified": false},
+  "aed_idr": {"price": null, "previous": null, "change_pct": 0, "unit": "IDR", "source": "Waiting for first verified update", "live": false, "verified": false},
+  "uae_gold_24k": {"price": null, "previous": null, "change_pct": 0, "unit": "AED/g", "source": "Waiting for first verified update", "live": false, "verified": false},
+  "antam_gold_1g": {"price": null, "previous": null, "change_pct": 0, "unit": "IDR/1g", "source": "Waiting for first verified update", "live": false, "verified": false},
+  "bei_candidates": [],
+  "bei_candidates_source": "public/bei-candidates.json",
+  "diagnostics": []
 }
