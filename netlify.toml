@@ -1,0 +1,12 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/widget-data.json"
+  to = "/.netlify/functions/widget-data"
+  status = 200
+  force = true
+
+[functions."widget-data"]
+  included_files = ["public/bei-candidates.json"]

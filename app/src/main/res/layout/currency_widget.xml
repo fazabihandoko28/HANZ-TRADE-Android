@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="14dp"
+    android:padding="12dp"
     android:background="@drawable/widget_background">
 
     <LinearLayout
@@ -16,51 +16,61 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="HANZ-TRADE"
+            android:text="HANZ TRADE"
             android:textColor="#F4F7FB"
             android:textStyle="bold"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
         <ProgressBar
             android:id="@+id/widgetProgress"
             style="?android:attr/progressBarStyleSmall"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:visibility="gone" />
         <TextView
             android:id="@+id/refreshButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:gravity="center"
             android:text="↻"
             android:textColor="#4DA3FF"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="USD/IDR" android:textColor="#91A0B6" android:textSize="11sp"/>
-            <TextView android:id="@+id/usdIdrValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="17sp"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AED/IDR" android:textColor="#91A0B6" android:textSize="11sp"/>
-            <TextView android:id="@+id/aedIdrValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="17sp"/>
-        </LinearLayout>
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="USD/AED" android:textColor="#91A0B6" android:textSize="11sp"/>
-            <TextView android:id="@+id/usdAedValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="17sp"/>
-        </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="5dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="USD/IDR" android:textColor="#91A0B6" android:textSize="11sp"/>
+        <TextView android:id="@+id/usdIdrValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="13sp"/>
+        <TextView android:id="@+id/usdIdrChange" android:layout_width="70dp" android:layout_height="wrap_content" android:gravity="end" android:text="—" android:textColor="#91A0B6" android:textSize="11sp"/>
     </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="4dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="AED/IDR" android:textColor="#91A0B6" android:textSize="11sp"/>
+        <TextView android:id="@+id/aedIdrValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="13sp"/>
+        <TextView android:id="@+id/aedIdrChange" android:layout_width="70dp" android:layout_height="wrap_content" android:gravity="end" android:text="—" android:textColor="#91A0B6" android:textSize="11sp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="4dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="UAE GOLD 24K" android:textColor="#91A0B6" android:textSize="11sp"/>
+        <TextView android:id="@+id/uaeGoldValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="13sp"/>
+        <TextView android:id="@+id/uaeGoldChange" android:layout_width="70dp" android:layout_height="wrap_content" android:gravity="end" android:text="—" android:textColor="#91A0B6" android:textSize="11sp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="4dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="ANTAM 24K 1G" android:textColor="#91A0B6" android:textSize="11sp"/>
+        <TextView android:id="@+id/antamValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="13sp"/>
+        <TextView android:id="@+id/antamChange" android:layout_width="70dp" android:layout_height="wrap_content" android:gravity="end" android:text="—" android:textColor="#91A0B6" android:textSize="11sp"/>
+    </LinearLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_marginTop="6dp" android:layout_marginBottom="5dp" android:background="#26354A" />
+
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="BEI STRONG CANDIDATE" android:textColor="#91A0B6" android:textSize="10sp" />
+    <TextView android:id="@+id/beiCandidates" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="No candidate" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="12sp" android:maxLines="1" android:ellipsize="end" />
 
     <TextView
         android:id="@+id/widgetStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="5dp"
         android:text="Tap ↻ to update"
         android:textColor="#91A0B6"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 </LinearLayout>
