@@ -1,14 +1,14 @@
 {
-  "schema_version": 2,
-  "ok": false,
+  "schema_version": 4,
+  "ok": true,
   "partial": true,
-  "updated": null,
+  "updated": "2026-07-27T06:05:22.601Z",
   "comparison_date": null,
-  "usd_idr": {"price": null, "previous": null, "change_pct": 0, "unit": "IDR", "source": "Waiting for first verified update", "live": false, "verified": false},
-  "aed_idr": {"price": null, "previous": null, "change_pct": 0, "unit": "IDR", "source": "Waiting for first verified update", "live": false, "verified": false},
-  "uae_gold_24k": {"price": null, "previous": null, "change_pct": 0, "unit": "AED/g", "source": "Waiting for first verified update", "live": false, "verified": false},
-  "antam_gold_1g": {"price": null, "previous": null, "change_pct": 0, "unit": "IDR/1g", "source": "Waiting for first verified update", "live": false, "verified": false},
+  "usd_idr": {"price": 17950.52, "previous": null, "change_pct": 0, "unit": "IDR", "source": "ExchangeRate-API verified bootstrap 2026-07-27", "status": "stale", "live": false, "verified": true, "provider_count": 1},
+  "aed_idr": {"price": 4887.82, "previous": null, "change_pct": 0, "unit": "IDR", "source": "USD/IDR divided by AED peg 3.6725; verified bootstrap 2026-07-27", "status": "stale", "live": false, "verified": true, "provider_count": 1},
+  "uae_gold_24k": {"price": 492.75, "previous": null, "change_pct": 0, "unit": "AED/g", "source": "Dubai retail 24K verified bootstrap 2026-07-27", "status": "stale", "live": false, "verified": true, "provider_count": 1, "quote_type": "retail"},
+  "antam_gold_1g": {"price": 2622000, "previous": null, "change_pct": 0, "unit": "IDR/1g", "source": "Logam Mulia API verified bootstrap 2026-07-27", "status": "stale", "live": false, "verified": true, "provider_count": 1},
   "bei_candidates": [],
   "bei_candidates_source": "public/bei-candidates.json",
-  "diagnostics": []
+  "diagnostics": [{"level":"info","group":"bootstrap","provider":"verified web checks","message":"Live workflow will replace these values; bootstrap prevents blank widget on first install."}]
 }

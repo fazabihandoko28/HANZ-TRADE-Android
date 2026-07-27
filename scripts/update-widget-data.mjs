@@ -10,7 +10,7 @@ const OUTPUT = path.join(PUBLIC, 'widget-data.json');
 const HISTORY_FILE = path.join(PUBLIC, 'widget-history.json');
 const CANDIDATES_FILE = path.join(PUBLIC, 'bei-candidates.json');
 const HEALTH_FILE = path.join(PUBLIC, 'health.json');
-const USER_AGENT = 'HANZ-Trade-Updater/2.0 (+https://hanz-trade.netlify.app)';
+const USER_AGENT = 'HANZ-Trade-Updater/2.1 (+https://hanz-trade.netlify.app)';
 const TROY_OUNCE_GRAMS = 31.1034768;
 const USD_AED_PEG = 3.6725;
 
@@ -165,7 +165,7 @@ async function fetchUaeSpotHargaEmas() {
 }
 
 async function fetchAntamResilient(diag) {
-  const providers = [fetchAntamHargaEmasOrg, fetchAntamHargaEmasCom, fetchAntamOfficial];
+  const providers = [fetchAntamOpenSourceApi, fetchAntamOfficial, fetchAntamHargaEmasCom];
   const results = await collectProviders('ANTAM', providers, diag);
   if (!results.length) return null;
   const accepted = rejectOutliers(results, r => r.value.item.price, 0.08);
@@ -180,6 +180,40 @@ async function fetchAntamResilient(diag) {
     },
     previous: chosen.value.previous ?? null
   };
+}
+
+
+async function fetchAntamOpenSourceApi() {
+  const data = await fetchJson('https://logam-mulia-api.iamutaki.workers.dev/api/prices/logammulia');
+  const price = parseAntamOpenSourceApi(data);
+  const row = Array.isArray(data?.data) ? data.data.find(item =>
+    Number(item?.weight) === 1 &&
+    String(item?.weightUnit ?? '').toLowerCase() === 'gr' &&
+    String(item?.material ?? '').toLowerCase() === 'gold' &&
+    String(item?.materialType ?? '').toLowerCase() === 'emas batangan'
+  ) : null;
+  return {
+    item: {
+      price,
+      source: `Logam Mulia API / ${row?.displayName ?? 'logammulia'} (${row?.recordedDate ?? 'latest'})`,
+      provider_count: 1
+    },
+    previous: null
+  };
+}
+
+function parseAntamOpenSourceApi(data) {
+  if (data?.success !== true || !Array.isArray(data?.data)) throw new Error('Invalid Logam Mulia API response');
+  const candidates = data.data.filter(item =>
+    Number(item?.weight) === 1 &&
+    String(item?.weightUnit ?? '').toLowerCase() === 'gr' &&
+    String(item?.material ?? '').toLowerCase() === 'gold' &&
+    String(item?.materialType ?? '').toLowerCase() === 'emas batangan'
+  );
+  if (candidates.length !== 1) throw new Error(`Expected exactly one standard ANTAM 1g row, found ${candidates.length}`);
+  const price = Number(candidates[0]?.sellPrice);
+  if (!isPlausibleAntam(price)) throw new Error(`Implausible ANTAM API price ${price}`);
+  return price;
 }
 
 async function fetchAntamHargaEmasOrg() {
@@ -348,8 +382,11 @@ function runSelfTest() {
   if (uae.price !== 492.75 || uae.previous !== 488.5) throw new Error('UAE retail parser failed');
   const spot = parseWorldGoldUsdOz('USD (Spot Dunia) $4.092,25 (+39,37) /oz');
   if (spot !== 4092.25) throw new Error(`World spot parser failed ${spot}`);
-  const antamOrg = parseAntamHargaEmasOrg('Antam, mulai dari 1 gram. Gram per Gram (Rp) per Gram (Rp) 0.5 1.343.500 1.132.500 1 2.445.000 2.265.000 2 4.823.000 4.530.000');
-  if (antamOrg !== 2445000) throw new Error(`Harga-Emas.org parser failed ${antamOrg}`);
+  const antamApi = parseAntamOpenSourceApi({success:true,data:[
+    {material:'gold',materialType:'Emas Batangan',weight:1,weightUnit:'gr',sellPrice:2622000},
+    {material:'gold',materialType:'Emas Batangan Gift Series',weight:1,weightUnit:'gr',sellPrice:2772000}
+  ]});
+  if (antamApi !== 2622000) throw new Error(`Logam Mulia API parser failed ${antamApi}`);
   const antamGeneric = parseAntamGeneric('ANTAM Emas Batangan 0.5 gr Rp1.469.500 1 gram Rp2.839.000 2 gram Rp5.618.000');
   if (antamGeneric !== 2839000) throw new Error(`ANTAM generic parser failed ${antamGeneric}`);
   const fake = [2445000, 2460000, 9000000].map((price,i)=>({value:{item:{price}},provider:String(i)}));
@@ -359,7 +396,7 @@ function runSelfTest() {
   if (c.join(',') !== 'BBRI,ANTM,TLKM') throw new Error('Candidate sanitation failed');
   const health = buildHealth({updated:new Date().toISOString(), partial:false, usd_idr:{status:'live',source:'test',price:1}, aed_idr:{status:'live',source:'test',price:1}, uae_gold_24k:{status:'verified-live',source:'test',price:1}, antam_gold_1g:{status:'verified-live',source:'test',price:1}, bei_candidates:['BBRI'], bei_candidates_source:'test', diagnostics:[]});
   if (health.overall !== 'OK') throw new Error('Health builder failed');
-  console.log('HANZ v2.0 deterministic self-test passed');
+  console.log('HANZ v2.1 deterministic self-test passed');
 }
 
 
@@ -393,7 +430,7 @@ function findPrevious(history,todayKey){const key=Object.keys(history).filter(k=
 function pruneHistory(history,keep){const keys=Object.keys(history).sort();while(keys.length>keep)delete history[keys.shift()];}
 function sanitizeCandidates(input){if(!Array.isArray(input))return[];const out=[];for(const item of input){const raw=typeof item==='string'?item:item?.ticker;const ticker=String(raw??'').toUpperCase().replace(/\.JK$/,'').trim();if(/^[A-Z]{4,5}$/.test(ticker)&&!out.includes(ticker))out.push(ticker);if(out.length>=8)break;}return out;}
 async function fetchJson(url){const r=await fetchWithTimeout(url,{headers:{accept:'application/json','user-agent':USER_AGENT}});if(!r.ok)throw new Error(`HTTP ${r.status} ${url}`);return r.json();}
-async function fetchText(url){const r=await fetchWithTimeout(url,{headers:{accept:'text/html,application/xhtml+xml','user-agent':'Mozilla/5.0 (compatible; HANZ-Trade/1.8; +https://hanz-trade.netlify.app)'}});if(!r.ok)throw new Error(`HTTP ${r.status} ${url}`);return r.text();}
+async function fetchText(url){const r=await fetchWithTimeout(url,{headers:{accept:'text/html,application/xhtml+xml','user-agent':'Mozilla/5.0 (compatible; HANZ-Trade/2.1; +https://hanz-trade.netlify.app)'}});if(!r.ok)throw new Error(`HTTP ${r.status} ${url}`);return r.text();}
 async function fetchWithTimeout(url,options){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),25000);try{return await fetch(url,{...options,signal:controller.signal,redirect:'follow'});}finally{clearTimeout(timer);}}
 async function readJson(file,fallback){try{return JSON.parse(await fs.readFile(file,'utf8'));}catch{return fallback;}}
 function cleanHtml(html){return html.replace(/&nbsp;/gi,' ').replace(/&#x2F;/gi,'/').replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&amp;/gi,'&').replace(/&#39;/gi,"'").replace(/&quot;/gi,'"').replace(/\s+/g,' ');}

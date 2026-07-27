@@ -1,4 +1,4 @@
-# HANZ TRADE v2.0
+# HANZ TRADE v2.1
 
 Android home-screen widget plus resilient static data engine.
 
