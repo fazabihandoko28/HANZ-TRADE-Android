@@ -1,0 +1,13 @@
+{
+  "symbol": "^JKSE",
+  "name": "IHSG",
+  "status": "uninitialized",
+  "market_date": null,
+  "close": null,
+  "previous_close": null,
+  "change": null,
+  "change_pct": null,
+  "source": null,
+  "updated_at": null,
+  "stale": true
+}
