@@ -1,0 +1,40 @@
+name: Update IHSG Snapshot
+
+on:
+  workflow_dispatch:
+  schedule:
+    # IDX trading-day snapshots in UTC: 02:00, 05:00, 08:00, 09:15 = 09:00, 12:00, 15:00, 16:15 WIB
+    - cron: '0 2 * * 1-5'
+    - cron: '0 5 * * 1-5'
+    - cron: '0 8 * * 1-5'
+    - cron: '15 9 * * 1-5'
+
+permissions:
+  contents: write
+
+jobs:
+  update-ihsg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Update IHSG snapshot
+        run: node scripts/update-ihsg.mjs
+
+      - name: Commit snapshot when changed
+        run: |
+          if git diff --quiet -- public/ihsg.json; then
+            echo 'No IHSG change to commit.'
+            exit 0
+          fi
+          git config user.name 'hanz-bot'
+          git config user.email 'hanz-bot@users.noreply.github.com'
+          git add public/ihsg.json
+          git commit -m 'Update IHSG snapshot'
+          git push
