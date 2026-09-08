@@ -1,13 +1,13 @@
 {
   "symbol": "^JKSE",
   "name": "IHSG",
-  "status": "uninitialized",
-  "market_date": null,
-  "close": null,
-  "previous_close": null,
-  "change": null,
-  "change_pct": null,
-  "source": null,
-  "updated_at": null,
-  "stale": true
+  "status": "last_close",
+  "market_date": "2026-09-08",
+  "close": 6674.95,
+  "previous_close": 6619.67,
+  "change": 55.28,
+  "change_pct": 0.84,
+  "source": "seed: Investing.com historical close",
+  "updated_at": "2026-09-08T16:37:00.000Z",
+  "stale": false
 }
