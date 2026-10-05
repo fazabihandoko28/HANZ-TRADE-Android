@@ -3,11 +3,11 @@
   "name": "IHSG",
   "status": "last_close",
   "market_date": "2026-10-05",
-  "close": 6105.56,
+  "close": 6118.86,
   "previous_close": 6036.89,
-  "change": 68.67,
-  "change_pct": 1.14,
+  "change": 81.97,
+  "change_pct": 1.36,
   "source": "Yahoo Finance chart API",
-  "updated_at": "2026-10-05T08:44:21.805Z",
+  "updated_at": "2026-10-05T12:03:34.885Z",
   "stale": false
 }
