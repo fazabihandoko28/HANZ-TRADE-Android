@@ -1,26 +1,26 @@
 {
   "schema_version": 1,
-  "overall": "DEGRADED",
-  "generated_at": "2026-07-27T06:34:40.368Z",
+  "overall": "OK",
+  "generated_at": "2026-10-26T18:36:23.356Z",
   "market_data": {
     "usd_idr": {
-      "status": "stale",
-      "source": "Last known good: ExchangeRate-API verified bootstrap 2026-07-27",
+      "status": "live",
+      "source": "Frankfurter v2 (2026-10-26)",
       "price_available": true
     },
     "aed_idr": {
-      "status": "stale",
-      "source": "Last known good: USD/IDR divided by AED peg 3.6725; verified bootstrap 2026-07-27",
+      "status": "live",
+      "source": "Frankfurter v2 derived (2026-10-26)",
       "price_available": true
     },
     "uae_gold_24k": {
-      "status": "stale",
-      "source": "Last known good: Dubai retail 24K verified bootstrap 2026-07-27",
+      "status": "live",
+      "source": "Gulf News / Dubai Gold & Jewellery Group retail",
       "price_available": true
     },
     "antam_gold_1g": {
-      "status": "stale",
-      "source": "Last known good: Logam Mulia API verified bootstrap 2026-07-27",
+      "status": "live",
+      "source": "HargaEmas.com ANTAM listing",
       "price_available": true
     }
   },
@@ -31,52 +31,52 @@
   },
   "diagnostics": [
     {
-      "level": "warning",
+      "level": "info",
       "group": "FX",
       "provider": "fetchFxFrankfurter",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "FX",
       "provider": "fetchFxOpenErApi",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeRetailGulfNews",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotGoldApi",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
       "level": "warning",
       "group": "ANTAM",
       "provider": "fetchAntamOpenSourceApi",
-      "message": "fetch failed"
+      "message": "Invalid Logam Mulia API response"
     },
     {
       "level": "warning",
       "group": "ANTAM",
       "provider": "fetchAntamOfficial",
-      "message": "fetch failed"
+      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
-      "message": "fetch failed"
+      "message": "success"
     }
   ]
 }

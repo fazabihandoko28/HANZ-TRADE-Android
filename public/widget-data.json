@@ -1,51 +1,51 @@
 {
   "schema_version": 4,
   "ok": true,
-  "partial": true,
-  "updated": "2026-07-27T06:34:40.368Z",
-  "comparison_date": null,
+  "partial": false,
+  "updated": "2026-10-26T18:36:23.356Z",
+  "comparison_date": "2026-07-27",
   "usd_idr": {
-    "price": 17950.52,
-    "previous": null,
-    "change_pct": 0,
+    "price": 18086,
+    "previous": 17950.52,
+    "change_pct": 0.75,
     "unit": "IDR",
-    "source": "Last known good: ExchangeRate-API verified bootstrap 2026-07-27",
-    "status": "stale",
-    "live": false,
+    "source": "Frankfurter v2 (2026-10-26)",
+    "status": "live",
+    "live": true,
     "verified": true,
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4887.82,
-    "previous": null,
-    "change_pct": 0,
+    "price": 4924.71,
+    "previous": 4887.82,
+    "change_pct": 0.75,
     "unit": "IDR",
-    "source": "Last known good: USD/IDR divided by AED peg 3.6725; verified bootstrap 2026-07-27",
-    "status": "stale",
-    "live": false,
+    "source": "Frankfurter v2 derived (2026-10-26)",
+    "status": "live",
+    "live": true,
     "verified": true,
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 492.75,
-    "previous": null,
+    "price": 484,
+    "previous": 484,
     "change_pct": 0,
     "unit": "AED/g",
-    "source": "Last known good: Dubai retail 24K verified bootstrap 2026-07-27",
-    "status": "stale",
-    "live": false,
+    "source": "Gulf News / Dubai Gold & Jewellery Group retail",
+    "status": "live",
+    "live": true,
     "verified": true,
     "provider_count": 1,
     "quote_type": "retail"
   },
   "antam_gold_1g": {
-    "price": 2622000,
-    "previous": null,
-    "change_pct": 0,
+    "price": 2540000,
+    "previous": 2622000,
+    "change_pct": -3.13,
     "unit": "IDR/1g",
-    "source": "Last known good: Logam Mulia API verified bootstrap 2026-07-27",
-    "status": "stale",
-    "live": false,
+    "source": "HargaEmas.com ANTAM listing",
+    "status": "live",
+    "live": true,
     "verified": true,
     "provider_count": 1
   },
@@ -53,52 +53,52 @@
   "bei_candidates_source": "public/bei-candidates.json",
   "diagnostics": [
     {
-      "level": "warning",
+      "level": "info",
       "group": "FX",
       "provider": "fetchFxFrankfurter",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "FX",
       "provider": "fetchFxOpenErApi",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeRetailGulfNews",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotGoldApi",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
       "level": "warning",
       "group": "ANTAM",
       "provider": "fetchAntamOpenSourceApi",
-      "message": "fetch failed"
+      "message": "Invalid Logam Mulia API response"
     },
     {
       "level": "warning",
       "group": "ANTAM",
       "provider": "fetchAntamOfficial",
-      "message": "fetch failed"
+      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
-      "message": "fetch failed"
+      "message": "success"
     }
   ]
 }
