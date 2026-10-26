@@ -1,0 +1,37 @@
+name: Update HANZ market data
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,37 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: hanz-market-update
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test market parsers
+        run: npm run test-widget
+      - name: Fetch market quotes and preserve verified fallback
+        run: npm run update-widget
+      - name: Validate generated data
+        run: npm run validate-public
+      - name: Publish widget data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/widget-data.json public/widget-history.json public/health.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update HANZ widget market snapshots"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
