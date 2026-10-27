@@ -2,12 +2,12 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-10-27T01:57:24.405Z",
+  "updated": "2026-10-27T07:38:46.399Z",
   "comparison_date": "2026-10-26",
   "usd_idr": {
-    "price": 18100,
+    "price": 18106,
     "previous": 18096,
-    "change_pct": 0.02,
+    "change_pct": 0.06,
     "unit": "IDR",
     "source": "Frankfurter v2 (2026-10-27)",
     "status": "live",
@@ -16,9 +16,9 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4928.52,
+    "price": 4930.16,
     "previous": 4927.43,
-    "change_pct": 0.02,
+    "change_pct": 0.06,
     "unit": "IDR",
     "source": "Frankfurter v2 derived (2026-10-27)",
     "status": "live",
@@ -27,9 +27,9 @@
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 485.25,
+    "price": 483.25,
     "previous": 485.25,
-    "change_pct": 0,
+    "change_pct": -0.41,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
     "status": "live",
@@ -39,9 +39,9 @@
     "quote_type": "retail"
   },
   "antam_gold_1g": {
-    "price": 2540000,
+    "price": 2550000,
     "previous": 2540000,
-    "change_pct": 0,
+    "change_pct": 0.39,
     "unit": "IDR/1g",
     "source": "HargaEmas.com ANTAM listing",
     "status": "live",
