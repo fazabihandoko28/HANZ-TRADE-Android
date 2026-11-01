@@ -2,7 +2,7 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-01T19:06:12.506Z",
+  "updated": "2026-11-01T22:43:10.491Z",
   "comparison_date": "2026-10-31",
   "usd_idr": {
     "price": 18146,
@@ -77,10 +77,10 @@
       "message": "success"
     },
     {
-      "level": "info",
+      "level": "warning",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
-      "message": "success"
+      "message": "Unable to parse world gold USD/oz"
     },
     {
       "level": "warning",
