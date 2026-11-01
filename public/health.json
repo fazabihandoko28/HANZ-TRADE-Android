@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "overall": "OK",
-  "generated_at": "2026-11-01T00:21:38.575Z",
+  "generated_at": "2026-11-01T06:42:22.058Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
