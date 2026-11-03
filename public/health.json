@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "overall": "OK",
-  "generated_at": "2026-11-03T02:34:25.154Z",
+  "generated_at": "2026-11-03T09:57:27.971Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
@@ -49,10 +49,10 @@
       "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotGoldApi",
-      "message": "fetch failed"
+      "message": "success"
     },
     {
       "level": "info",
