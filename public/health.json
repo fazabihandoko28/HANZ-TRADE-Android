@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "overall": "OK",
-  "generated_at": "2026-11-04T03:08:48.722Z",
+  "generated_at": "2026-11-04T11:28:11.306Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
-      "source": "Frankfurter v2 (2026-11-04)",
+      "source": "ExchangeRate-API open endpoint",
       "price_available": true
     },
     "aed_idr": {
       "status": "live",
-      "source": "Frankfurter v2 derived (2026-11-04)",
+      "source": "ExchangeRate-API-derived",
       "price_available": true
     },
     "uae_gold_24k": {
@@ -30,18 +30,6 @@
     "source": "public/bei-candidates.json"
   },
   "diagnostics": [
-    {
-      "level": "info",
-      "group": "FX",
-      "provider": "fetchFxFrankfurter",
-      "message": "success"
-    },
-    {
-      "level": "info",
-      "group": "FX",
-      "provider": "fetchFxOpenErApi",
-      "message": "success"
-    },
     {
       "level": "info",
       "group": "UAE gold",
@@ -76,6 +64,18 @@
       "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
+      "message": "success"
+    },
+    {
+      "level": "warning",
+      "group": "FX",
+      "provider": "fetchFxFrankfurter",
+      "message": "HTTP 522 https://api.frankfurter.dev/v2/rate/USD/AED"
+    },
+    {
+      "level": "info",
+      "group": "FX",
+      "provider": "fetchFxOpenErApi",
       "message": "success"
     }
   ]

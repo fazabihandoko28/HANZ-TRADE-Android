@@ -2,34 +2,34 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-04T03:08:48.722Z",
+  "updated": "2026-11-04T11:28:11.306Z",
   "comparison_date": "2026-11-03",
   "usd_idr": {
-    "price": 18138,
+    "price": 18140.25,
     "previous": 18138,
-    "change_pct": 0,
+    "change_pct": 0.01,
     "unit": "IDR",
-    "source": "Frankfurter v2 (2026-11-04)",
+    "source": "ExchangeRate-API open endpoint",
     "status": "live",
     "live": true,
     "verified": true,
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4938.87,
+    "price": 4939.48,
     "previous": 4938.87,
-    "change_pct": 0,
+    "change_pct": 0.01,
     "unit": "IDR",
-    "source": "Frankfurter v2 derived (2026-11-04)",
+    "source": "ExchangeRate-API-derived",
     "status": "live",
     "live": true,
     "verified": true,
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 477,
-    "previous": 473.25,
-    "change_pct": 0.79,
+    "price": 484,
+    "previous": 487.5,
+    "change_pct": -0.72,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
     "status": "live",
@@ -52,18 +52,6 @@
   "bei_candidates": [],
   "bei_candidates_source": "public/bei-candidates.json",
   "diagnostics": [
-    {
-      "level": "info",
-      "group": "FX",
-      "provider": "fetchFxFrankfurter",
-      "message": "success"
-    },
-    {
-      "level": "info",
-      "group": "FX",
-      "provider": "fetchFxOpenErApi",
-      "message": "success"
-    },
     {
       "level": "info",
       "group": "UAE gold",
@@ -98,6 +86,18 @@
       "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
+      "message": "success"
+    },
+    {
+      "level": "warning",
+      "group": "FX",
+      "provider": "fetchFxFrankfurter",
+      "message": "HTTP 522 https://api.frankfurter.dev/v2/rate/USD/AED"
+    },
+    {
+      "level": "info",
+      "group": "FX",
+      "provider": "fetchFxOpenErApi",
       "message": "success"
     }
   ]
