@@ -2,25 +2,25 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-04T11:28:11.306Z",
+  "updated": "2026-11-04T18:47:50.975Z",
   "comparison_date": "2026-11-03",
   "usd_idr": {
-    "price": 18140.25,
+    "price": 18138,
     "previous": 18138,
-    "change_pct": 0.01,
+    "change_pct": 0,
     "unit": "IDR",
-    "source": "ExchangeRate-API open endpoint",
+    "source": "Frankfurter v2 (2026-11-04)",
     "status": "live",
     "live": true,
     "verified": true,
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4939.48,
+    "price": 4938.87,
     "previous": 4938.87,
-    "change_pct": 0.01,
+    "change_pct": 0,
     "unit": "IDR",
-    "source": "ExchangeRate-API-derived",
+    "source": "Frankfurter v2 derived (2026-11-04)",
     "status": "live",
     "live": true,
     "verified": true,
@@ -52,6 +52,18 @@
   "bei_candidates": [],
   "bei_candidates_source": "public/bei-candidates.json",
   "diagnostics": [
+    {
+      "level": "info",
+      "group": "FX",
+      "provider": "fetchFxFrankfurter",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "FX",
+      "provider": "fetchFxOpenErApi",
+      "message": "success"
+    },
     {
       "level": "info",
       "group": "UAE gold",
@@ -86,18 +98,6 @@
       "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
-      "message": "success"
-    },
-    {
-      "level": "warning",
-      "group": "FX",
-      "provider": "fetchFxFrankfurter",
-      "message": "HTTP 522 https://api.frankfurter.dev/v2/rate/USD/AED"
-    },
-    {
-      "level": "info",
-      "group": "FX",
-      "provider": "fetchFxOpenErApi",
       "message": "success"
     }
   ]
