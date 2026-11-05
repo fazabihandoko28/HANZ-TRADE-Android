@@ -2,12 +2,12 @@
   "symbol": "^JKSE",
   "name": "IHSG",
   "status": "last_close",
-  "market_date": "2026-11-03",
-  "close": 4904.29,
-  "previous_close": 5096.83,
-  "change": -192.54,
-  "change_pct": -3.78,
+  "market_date": "2026-11-05",
+  "close": 5030.26,
+  "previous_close": 4919.77,
+  "change": 110.49,
+  "change_pct": 2.25,
   "source": "Yahoo Finance chart API",
-  "updated_at": "2026-11-04T17:10:44.773Z",
+  "updated_at": "2026-11-05T09:15:21.897Z",
   "stale": false
 }
