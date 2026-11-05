@@ -2,12 +2,12 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-05T07:16:35.443Z",
+  "updated": "2026-11-05T15:44:22.935Z",
   "comparison_date": "2026-11-04",
   "usd_idr": {
-    "price": 18131,
+    "price": 18106,
     "previous": 18138,
-    "change_pct": -0.04,
+    "change_pct": -0.18,
     "unit": "IDR",
     "source": "Frankfurter v2 (2026-11-05)",
     "status": "live",
@@ -16,9 +16,9 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4936.96,
+    "price": 4930.16,
     "previous": 4938.87,
-    "change_pct": -0.04,
+    "change_pct": -0.18,
     "unit": "IDR",
     "source": "Frankfurter v2 derived (2026-11-05)",
     "status": "live",
@@ -28,8 +28,8 @@
   },
   "uae_gold_24k": {
     "price": 498.75,
-    "previous": 487.5,
-    "change_pct": 2.31,
+    "previous": 497.75,
+    "change_pct": 0.2,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
     "status": "live",
@@ -65,24 +65,6 @@
       "message": "success"
     },
     {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeRetailGulfNews",
-      "message": "success"
-    },
-    {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeSpotGoldApi",
-      "message": "success"
-    },
-    {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeSpotHargaEmas",
-      "message": "success"
-    },
-    {
       "level": "warning",
       "group": "ANTAM",
       "provider": "fetchAntamOpenSourceApi",
@@ -98,6 +80,24 @@
       "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeRetailGulfNews",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotGoldApi",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotHargaEmas",
       "message": "success"
     }
   ]
