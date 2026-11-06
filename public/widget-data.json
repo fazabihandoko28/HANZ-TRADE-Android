@@ -2,12 +2,12 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-06T02:10:47.476Z",
+  "updated": "2026-11-06T09:45:08.707Z",
   "comparison_date": "2026-11-05",
   "usd_idr": {
-    "price": 18106,
+    "price": 18105,
     "previous": 18108,
-    "change_pct": -0.01,
+    "change_pct": -0.02,
     "unit": "IDR",
     "source": "Frankfurter v2 (2026-11-06)",
     "status": "live",
@@ -16,9 +16,9 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4930.16,
+    "price": 4929.88,
     "previous": 4930.7,
-    "change_pct": -0.01,
+    "change_pct": -0.02,
     "unit": "IDR",
     "source": "Frankfurter v2 derived (2026-11-06)",
     "status": "live",
@@ -27,9 +27,9 @@
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 489.75,
-    "previous": 497,
-    "change_pct": -1.46,
+    "price": 487.5,
+    "previous": 491.25,
+    "change_pct": -0.76,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
     "status": "live",
@@ -39,9 +39,9 @@
     "quote_type": "retail"
   },
   "antam_gold_1g": {
-    "price": 2557000,
+    "price": 2565000,
     "previous": 2557000,
-    "change_pct": 0,
+    "change_pct": 0.31,
     "unit": "IDR/1g",
     "source": "HargaEmas.com ANTAM listing",
     "status": "live",
@@ -65,24 +65,6 @@
       "message": "success"
     },
     {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeRetailGulfNews",
-      "message": "success"
-    },
-    {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeSpotGoldApi",
-      "message": "success"
-    },
-    {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeSpotHargaEmas",
-      "message": "success"
-    },
-    {
       "level": "warning",
       "group": "ANTAM",
       "provider": "fetchAntamOpenSourceApi",
@@ -98,6 +80,24 @@
       "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeRetailGulfNews",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotGoldApi",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotHargaEmas",
       "message": "success"
     }
   ]
