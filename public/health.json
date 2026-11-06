@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "overall": "OK",
-  "generated_at": "2026-11-06T09:45:08.707Z",
+  "generated_at": "2026-11-06T17:20:57.821Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
-      "source": "Frankfurter v2 (2026-11-06)",
+      "source": "Frankfurter v2 (2026-11-07)",
       "price_available": true
     },
     "aed_idr": {
       "status": "live",
-      "source": "Frankfurter v2 derived (2026-11-06)",
+      "source": "Frankfurter v2 derived (2026-11-07)",
       "price_available": true
     },
     "uae_gold_24k": {
@@ -43,24 +43,6 @@
       "message": "success"
     },
     {
-      "level": "warning",
-      "group": "ANTAM",
-      "provider": "fetchAntamOpenSourceApi",
-      "message": "Invalid Logam Mulia API response"
-    },
-    {
-      "level": "warning",
-      "group": "ANTAM",
-      "provider": "fetchAntamOfficial",
-      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
-    },
-    {
-      "level": "info",
-      "group": "ANTAM",
-      "provider": "fetchAntamHargaEmasCom",
-      "message": "success"
-    },
-    {
       "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeRetailGulfNews",
@@ -76,6 +58,24 @@
       "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
+      "message": "success"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOpenSourceApi",
+      "message": "Invalid Logam Mulia API response"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOfficial",
+      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
+    },
+    {
+      "level": "info",
+      "group": "ANTAM",
+      "provider": "fetchAntamHargaEmasCom",
       "message": "success"
     }
   ]

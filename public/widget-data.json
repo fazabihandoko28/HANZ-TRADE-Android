@@ -2,25 +2,25 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-06T09:45:08.707Z",
+  "updated": "2026-11-06T17:20:57.821Z",
   "comparison_date": "2026-11-05",
   "usd_idr": {
-    "price": 18105,
+    "price": 18099,
     "previous": 18108,
-    "change_pct": -0.02,
+    "change_pct": -0.05,
     "unit": "IDR",
-    "source": "Frankfurter v2 (2026-11-06)",
+    "source": "Frankfurter v2 (2026-11-07)",
     "status": "live",
     "live": true,
     "verified": true,
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4929.88,
+    "price": 4928.25,
     "previous": 4930.7,
-    "change_pct": -0.02,
+    "change_pct": -0.05,
     "unit": "IDR",
-    "source": "Frankfurter v2 derived (2026-11-06)",
+    "source": "Frankfurter v2 derived (2026-11-07)",
     "status": "live",
     "live": true,
     "verified": true,
@@ -65,24 +65,6 @@
       "message": "success"
     },
     {
-      "level": "warning",
-      "group": "ANTAM",
-      "provider": "fetchAntamOpenSourceApi",
-      "message": "Invalid Logam Mulia API response"
-    },
-    {
-      "level": "warning",
-      "group": "ANTAM",
-      "provider": "fetchAntamOfficial",
-      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
-    },
-    {
-      "level": "info",
-      "group": "ANTAM",
-      "provider": "fetchAntamHargaEmasCom",
-      "message": "success"
-    },
-    {
       "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeRetailGulfNews",
@@ -98,6 +80,24 @@
       "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
+      "message": "success"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOpenSourceApi",
+      "message": "Invalid Logam Mulia API response"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOfficial",
+      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
+    },
+    {
+      "level": "info",
+      "group": "ANTAM",
+      "provider": "fetchAntamHargaEmasCom",
       "message": "success"
     }
   ]
