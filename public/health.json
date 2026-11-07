@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "overall": "OK",
-  "generated_at": "2026-11-07T02:17:46.693Z",
+  "generated_at": "2026-11-07T09:08:54.734Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
@@ -55,10 +55,10 @@
       "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
-      "message": "Unable to parse world gold USD/oz"
+      "message": "success"
     },
     {
       "level": "warning",

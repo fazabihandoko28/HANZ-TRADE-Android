@@ -2,12 +2,12 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-07T02:17:46.693Z",
+  "updated": "2026-11-07T09:08:54.734Z",
   "comparison_date": "2026-11-06",
   "usd_idr": {
-    "price": 18096,
+    "price": 18093,
     "previous": 18096,
-    "change_pct": 0,
+    "change_pct": -0.02,
     "unit": "IDR",
     "source": "Frankfurter v2 (2026-11-08)",
     "status": "live",
@@ -16,9 +16,9 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4927.43,
+    "price": 4926.62,
     "previous": 4927.43,
-    "change_pct": 0,
+    "change_pct": -0.02,
     "unit": "IDR",
     "source": "Frankfurter v2 derived (2026-11-08)",
     "status": "live",
@@ -27,8 +27,8 @@
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 491.25,
-    "previous": 491.25,
+    "price": 490.5,
+    "previous": 490.5,
     "change_pct": 0,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
@@ -77,10 +77,10 @@
       "message": "success"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
-      "message": "Unable to parse world gold USD/oz"
+      "message": "success"
     },
     {
       "level": "warning",
