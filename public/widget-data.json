@@ -2,7 +2,7 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-07T15:52:00.110Z",
+  "updated": "2026-11-07T20:06:36.498Z",
   "comparison_date": "2026-11-06",
   "usd_idr": {
     "price": 18097,
@@ -65,24 +65,6 @@
       "message": "success"
     },
     {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeRetailGulfNews",
-      "message": "success"
-    },
-    {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeSpotGoldApi",
-      "message": "success"
-    },
-    {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeSpotHargaEmas",
-      "message": "success"
-    },
-    {
       "level": "warning",
       "group": "ANTAM",
       "provider": "fetchAntamOpenSourceApi",
@@ -98,6 +80,24 @@
       "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeRetailGulfNews",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotGoldApi",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotHargaEmas",
       "message": "success"
     }
   ]
