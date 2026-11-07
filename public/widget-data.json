@@ -2,14 +2,14 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-06T22:18:19.037Z",
-  "comparison_date": "2026-11-05",
+  "updated": "2026-11-07T02:17:46.693Z",
+  "comparison_date": "2026-11-06",
   "usd_idr": {
     "price": 18096,
-    "previous": 18108,
-    "change_pct": -0.07,
+    "previous": 18096,
+    "change_pct": 0,
     "unit": "IDR",
-    "source": "Frankfurter v2 (2026-11-07)",
+    "source": "Frankfurter v2 (2026-11-08)",
     "status": "live",
     "live": true,
     "verified": true,
@@ -17,10 +17,10 @@
   },
   "aed_idr": {
     "price": 4927.43,
-    "previous": 4930.7,
-    "change_pct": -0.07,
+    "previous": 4927.43,
+    "change_pct": 0,
     "unit": "IDR",
-    "source": "Frankfurter v2 derived (2026-11-07)",
+    "source": "Frankfurter v2 derived (2026-11-08)",
     "status": "live",
     "live": true,
     "verified": true,
@@ -39,9 +39,9 @@
     "quote_type": "retail"
   },
   "antam_gold_1g": {
-    "price": 2565000,
-    "previous": 2557000,
-    "change_pct": 0.31,
+    "price": 2545000,
+    "previous": 2565000,
+    "change_pct": -0.78,
     "unit": "IDR/1g",
     "source": "HargaEmas.com ANTAM listing",
     "status": "live",
@@ -77,10 +77,10 @@
       "message": "success"
     },
     {
-      "level": "info",
+      "level": "warning",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
-      "message": "success"
+      "message": "Unable to parse world gold USD/oz"
     },
     {
       "level": "warning",

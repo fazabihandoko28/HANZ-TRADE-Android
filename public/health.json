@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "overall": "OK",
-  "generated_at": "2026-11-06T22:18:19.037Z",
+  "generated_at": "2026-11-07T02:17:46.693Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
-      "source": "Frankfurter v2 (2026-11-07)",
+      "source": "Frankfurter v2 (2026-11-08)",
       "price_available": true
     },
     "aed_idr": {
       "status": "live",
-      "source": "Frankfurter v2 derived (2026-11-07)",
+      "source": "Frankfurter v2 derived (2026-11-08)",
       "price_available": true
     },
     "uae_gold_24k": {
@@ -55,10 +55,10 @@
       "message": "success"
     },
     {
-      "level": "info",
+      "level": "warning",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
-      "message": "success"
+      "message": "Unable to parse world gold USD/oz"
     },
     {
       "level": "warning",
