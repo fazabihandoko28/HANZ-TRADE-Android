@@ -2,12 +2,12 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-08T21:01:48.074Z",
-  "comparison_date": "2026-11-07",
+  "updated": "2026-11-09T00:42:03.443Z",
+  "comparison_date": "2026-11-08",
   "usd_idr": {
-    "price": 18097,
+    "price": 18117,
     "previous": 18097,
-    "change_pct": 0,
+    "change_pct": 0.11,
     "unit": "IDR",
     "source": "Frankfurter v2 (2026-11-08)",
     "status": "live",
@@ -16,9 +16,9 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4927.71,
+    "price": 4933.15,
     "previous": 4927.71,
-    "change_pct": 0,
+    "change_pct": 0.11,
     "unit": "IDR",
     "source": "Frankfurter v2 derived (2026-11-08)",
     "status": "live",
