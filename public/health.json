@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "overall": "OK",
-  "generated_at": "2026-11-12T07:36:39.458Z",
+  "generated_at": "2026-11-12T16:11:18.892Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
@@ -43,24 +43,6 @@
       "message": "success"
     },
     {
-      "level": "warning",
-      "group": "ANTAM",
-      "provider": "fetchAntamOpenSourceApi",
-      "message": "Invalid Logam Mulia API response"
-    },
-    {
-      "level": "warning",
-      "group": "ANTAM",
-      "provider": "fetchAntamOfficial",
-      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
-    },
-    {
-      "level": "info",
-      "group": "ANTAM",
-      "provider": "fetchAntamHargaEmasCom",
-      "message": "success"
-    },
-    {
       "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeRetailGulfNews",
@@ -76,6 +58,24 @@
       "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
+      "message": "success"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOpenSourceApi",
+      "message": "Invalid Logam Mulia API response"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOfficial",
+      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
+    },
+    {
+      "level": "info",
+      "group": "ANTAM",
+      "provider": "fetchAntamHargaEmasCom",
       "message": "success"
     }
   ]
