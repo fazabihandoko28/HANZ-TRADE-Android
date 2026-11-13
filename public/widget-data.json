@@ -1,13 +1,13 @@
 {
   "schema_version": 4,
   "ok": true,
-  "partial": true,
-  "updated": "2026-11-13T10:47:50.182Z",
+  "partial": false,
+  "updated": "2026-11-13T18:28:10.427Z",
   "comparison_date": "2026-11-12",
   "usd_idr": {
-    "price": 18229,
+    "price": 18234,
     "previous": 18203,
-    "change_pct": 0.14,
+    "change_pct": 0.17,
     "unit": "IDR",
     "source": "Frankfurter v2 (2026-11-13)",
     "status": "live",
@@ -16,9 +16,9 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4963.65,
+    "price": 4965.01,
     "previous": 4956.57,
-    "change_pct": 0.14,
+    "change_pct": 0.17,
     "unit": "IDR",
     "source": "Frankfurter v2 derived (2026-11-13)",
     "status": "live",
@@ -39,13 +39,13 @@
     "quote_type": "retail"
   },
   "antam_gold_1g": {
-    "price": 2518000,
+    "price": 2509000,
     "previous": 2518000,
-    "change_pct": 0,
+    "change_pct": -0.36,
     "unit": "IDR/1g",
-    "source": "Last known good: HargaEmas.com ANTAM listing",
-    "status": "stale",
-    "live": false,
+    "source": "HargaEmas.com ANTAM listing",
+    "status": "live",
+    "live": true,
     "verified": true,
     "provider_count": 1
   },
@@ -95,10 +95,10 @@
       "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
-      "message": "fetch failed"
+      "message": "success"
     }
   ]
 }
