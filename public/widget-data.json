@@ -2,7 +2,7 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-13T18:28:10.427Z",
+  "updated": "2026-11-13T23:47:25.942Z",
   "comparison_date": "2026-11-12",
   "usd_idr": {
     "price": 18234,
@@ -27,9 +27,9 @@
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 471.5,
-    "previous": 469.5,
-    "change_pct": 0.43,
+    "price": 467.75,
+    "previous": 467.75,
+    "change_pct": 0,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
     "status": "live",
