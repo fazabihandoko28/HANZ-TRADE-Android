@@ -2,34 +2,34 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-12T22:25:00.798Z",
-  "comparison_date": "2026-11-11",
+  "updated": "2026-11-13T02:51:00.530Z",
+  "comparison_date": "2026-11-12",
   "usd_idr": {
-    "price": 18203,
-    "previous": 18123,
-    "change_pct": 0.44,
+    "price": 18207,
+    "previous": 18203,
+    "change_pct": 0.02,
     "unit": "IDR",
-    "source": "Frankfurter v2 (2026-11-12)",
+    "source": "Frankfurter v2 (2026-11-13)",
     "status": "live",
     "live": true,
     "verified": true,
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4956.57,
-    "previous": 4934.79,
-    "change_pct": 0.44,
+    "price": 4957.66,
+    "previous": 4956.57,
+    "change_pct": 0.02,
     "unit": "IDR",
-    "source": "Frankfurter v2 derived (2026-11-12)",
+    "source": "Frankfurter v2 derived (2026-11-13)",
     "status": "live",
     "live": true,
     "verified": true,
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 465.25,
+    "price": 469,
     "previous": 465.25,
-    "change_pct": 0,
+    "change_pct": 0.81,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
     "status": "live",
@@ -40,8 +40,8 @@
   },
   "antam_gold_1g": {
     "price": 2518000,
-    "previous": 2530000,
-    "change_pct": -0.47,
+    "previous": 2518000,
+    "change_pct": 0,
     "unit": "IDR/1g",
     "source": "HargaEmas.com ANTAM listing",
     "status": "live",
@@ -65,6 +65,24 @@
       "message": "success"
     },
     {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeRetailGulfNews",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotGoldApi",
+      "message": "success"
+    },
+    {
+      "level": "info",
+      "group": "UAE gold",
+      "provider": "fetchUaeSpotHargaEmas",
+      "message": "success"
+    },
+    {
       "level": "warning",
       "group": "ANTAM",
       "provider": "fetchAntamOpenSourceApi",
@@ -80,24 +98,6 @@
       "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
-      "message": "success"
-    },
-    {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeRetailGulfNews",
-      "message": "success"
-    },
-    {
-      "level": "warning",
-      "group": "UAE gold",
-      "provider": "fetchUaeSpotGoldApi",
-      "message": "fetch failed"
-    },
-    {
-      "level": "info",
-      "group": "UAE gold",
-      "provider": "fetchUaeSpotHargaEmas",
       "message": "success"
     }
   ]
