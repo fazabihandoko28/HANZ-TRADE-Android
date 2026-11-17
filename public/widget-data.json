@@ -1,13 +1,13 @@
 {
   "schema_version": 4,
   "ok": true,
-  "partial": true,
-  "updated": "2026-11-17T11:39:39.593Z",
+  "partial": false,
+  "updated": "2026-11-17T20:44:38.082Z",
   "comparison_date": "2026-11-16",
   "usd_idr": {
-    "price": 18245,
+    "price": 18248,
     "previous": 18231,
-    "change_pct": 0.08,
+    "change_pct": 0.09,
     "unit": "IDR",
     "source": "Frankfurter v2 (2026-11-17)",
     "status": "live",
@@ -16,9 +16,9 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4968.01,
+    "price": 4968.82,
     "previous": 4964.19,
-    "change_pct": 0.08,
+    "change_pct": 0.09,
     "unit": "IDR",
     "source": "Frankfurter v2 derived (2026-11-17)",
     "status": "live",
@@ -27,9 +27,9 @@
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 467,
-    "previous": 465.5,
-    "change_pct": 0.32,
+    "price": 464.25,
+    "previous": 464.25,
+    "change_pct": 0,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
     "status": "live",
@@ -43,9 +43,9 @@
     "previous": 2517000,
     "change_pct": -0.08,
     "unit": "IDR/1g",
-    "source": "Last known good: HargaEmas.com ANTAM listing",
-    "status": "stale",
-    "live": false,
+    "source": "HargaEmas.com ANTAM listing",
+    "status": "live",
+    "live": true,
     "verified": true,
     "provider_count": 1
   },
@@ -95,10 +95,10 @@
       "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
-      "message": "Unable to parse ANTAM 1g price"
+      "message": "success"
     }
   ]
 }
