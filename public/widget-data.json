@@ -2,12 +2,12 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-18T11:26:53.592Z",
+  "updated": "2026-11-18T19:30:58.198Z",
   "comparison_date": "2026-11-17",
   "usd_idr": {
-    "price": 18252,
+    "price": 18243,
     "previous": 18248,
-    "change_pct": 0.02,
+    "change_pct": -0.03,
     "unit": "IDR",
     "source": "Frankfurter v2 (2026-11-18)",
     "status": "live",
@@ -16,9 +16,9 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4969.91,
+    "price": 4967.46,
     "previous": 4968.82,
-    "change_pct": 0.02,
+    "change_pct": -0.03,
     "unit": "IDR",
     "source": "Frankfurter v2 derived (2026-11-18)",
     "status": "live",
@@ -39,9 +39,9 @@
     "quote_type": "retail"
   },
   "antam_gold_1g": {
-    "price": 2515000,
+    "price": 2514000,
     "previous": 2515000,
-    "change_pct": 0,
+    "change_pct": -0.04,
     "unit": "IDR/1g",
     "source": "HargaEmas.com ANTAM listing",
     "status": "live",
