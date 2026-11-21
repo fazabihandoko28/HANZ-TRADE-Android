@@ -18,15 +18,20 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CurrencyWidgetProvider extends AppWidgetProvider {
     public static final String ACTION_REFRESH = "com.hanztrade.app.REFRESH_WIDGET";
-    private static final String ENDPOINT = "https://hanz-trade.netlify.app/widget-data.json";
+    private static final String DATA_ROOT =
+            "https://raw.githubusercontent.com/fazabihandoko28/HANZ-TRADE-Android/main/public/";
+    private static final DateTimeFormatter DATA_TIME =
+            DateTimeFormatter.ofPattern("dd MMM HH:mm", Locale.ENGLISH).withZone(ZoneId.systemDefault());
     private static final String PREFS = "hanz_widget_cache";
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
     private static final int GREEN = Color.rgb(45, 196, 125);
@@ -35,10 +40,16 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager manager, int[] appWidgetIds) {
-        for (int id : appWidgetIds) {
-            showLoading(context, manager, id);
-            fetchAndUpdate(context, manager, id);
-        }
+        if (appWidgetIds.length == 0) return;
+        PendingResult pending = goAsync();
+        EXECUTOR.execute(() -> {
+            try {
+                RemoteViews views = fetchViews(context);
+                manager.updateAppWidget(appWidgetIds, views);
+            } finally {
+                if (pending != null) pending.finish();
+            }
+        });
     }
 
     @Override
@@ -51,67 +62,85 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private void showLoading(Context context, AppWidgetManager manager, int id) {
+    private RemoteViews fetchViews(Context context) {
         RemoteViews views = baseViews(context);
         applyCached(context, views);
-        views.setViewVisibility(R.id.widgetProgress, View.VISIBLE);
-        views.setTextViewText(R.id.widgetStatus, "Updating…");
-        manager.updateAppWidget(id, views);
-    }
+        var cache = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        String marketDate = cache.getString("market_data_time", "");
+        String ihsgDate = cache.getString("ihsg_date", "");
+        String marketStatus = "Cached";
+        String ihsgStatus = "Cached";
 
-    private void fetchAndUpdate(Context context, AppWidgetManager manager, int id) {
-        EXECUTOR.execute(() -> {
-            RemoteViews views = baseViews(context);
-            try {
-                JSONObject root = getJson(ENDPOINT);
-                if (!root.optBoolean("ok", true)) throw new IllegalStateException("API not ready");
-
-                setMarket(views, R.id.usdIdrValue, R.id.usdIdrChange,
-                        root.getJSONObject("usd_idr"), "Rp ", 0, context, "usd");
-                setMarket(views, R.id.aedIdrValue, R.id.aedIdrChange,
-                        root.getJSONObject("aed_idr"), "Rp ", 0, context, "aed");
-                setMarket(views, R.id.uaeGoldValue, R.id.uaeGoldChange,
-                        root.getJSONObject("uae_gold_24k"), "AED ", 2, context, "uae_gold");
-                setMarket(views, R.id.antamValue, R.id.antamChange,
-                        root.getJSONObject("antam_gold_1g"), "Rp ", 0, context, "antam");
-
-                JSONArray candidates = root.optJSONArray("bei_candidates");
-                String candidateText = candidateText(candidates);
-                views.setTextViewText(R.id.beiCandidates, candidateText);
-                context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
-                        .putString("candidates", candidateText)
-                        .putLong("updated", System.currentTimeMillis())
-                        .apply();
-
-                String sourceStatus = root.optBoolean("partial", false) ? "Partial data" : "Live";
-                views.setTextViewText(R.id.widgetStatus, sourceStatus + " · Updated " +
-                        new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
-                views.setViewVisibility(R.id.widgetProgress, View.GONE);
-                manager.updateAppWidget(id, views);
-            } catch (Exception e) {
-                applyCached(context, views);
-                views.setViewVisibility(R.id.widgetProgress, View.GONE);
-                views.setTextViewText(R.id.widgetStatus, "Cached/offline · tap ↻");
-                manager.updateAppWidget(id, views);
+        try {
+            JSONObject root = getJson(DATA_ROOT + "widget-data.json");
+            if (!root.getBoolean("ok")) throw new IllegalStateException("Market feed unavailable");
+            Instant snapshot = Instant.parse(root.getString("updated"));
+            if (!marketDate.isEmpty() && snapshot.isBefore(Instant.parse(marketDate))) {
+                throw new IllegalStateException("Older market snapshot");
             }
-        });
+            JSONObject usd = root.getJSONObject("usd_idr");
+            JSONObject aed = root.getJSONObject("aed_idr");
+            JSONObject uaeGold = root.getJSONObject("uae_gold_24k");
+            JSONObject antam = root.getJSONObject("antam_gold_1g");
+            setMarket(views, R.id.usdIdrValue, R.id.usdIdrChange, usd, "Rp ", 0, context, "usd");
+            setMarket(views, R.id.aedIdrValue, R.id.aedIdrChange, aed, "Rp ", 0, context, "aed");
+            setMarket(views, R.id.uaeGoldValue, R.id.uaeGoldChange, uaeGold, "AED ", 2, context, "uae_gold");
+            setMarket(views, R.id.antamValue, R.id.antamChange, antam, "Rp ", 0, context, "antam");
+            String candidates = candidateText(root.optJSONArray("bei_candidates"));
+            views.setTextViewText(R.id.beiCandidates, candidates);
+            marketDate = snapshot.toString();
+            marketStatus = root.optBoolean("partial") ? "Partial" : "Data";
+            cache.edit().putString("candidates", candidates)
+                    .putString("market_data_time", marketDate).apply();
+        } catch (Exception ignored) {
+            // Keep the last available values when the market feed fails.
+        }
+
+        try {
+            JSONObject index = getJson(DATA_ROOT + "ihsg.json");
+            LocalDate date = LocalDate.parse(index.getString("market_date"));
+            double close = index.getDouble("close");
+            double change = index.getDouble("change_pct");
+            if (!Double.isFinite(close) || close <= 0 || !Double.isFinite(change)
+                    || (!ihsgDate.isEmpty() && date.isBefore(LocalDate.parse(ihsgDate)))) {
+                throw new IllegalStateException("Invalid or older IHSG snapshot");
+            }
+            JSONObject quote = new JSONObject().put("price", close).put("change_pct", change);
+            setMarket(views, R.id.ihsgValue, R.id.ihsgChange, quote, "", 2, context, "ihsg");
+            ihsgDate = date.toString();
+            ihsgStatus = index.optBoolean("stale") ? "Cached" : "";
+            cache.edit().putString("ihsg_date", ihsgDate).apply();
+        } catch (Exception ignored) {
+            // IHSG and the market feed can refresh independently.
+        }
+
+        String marketLine = marketDate.isEmpty() ? "Market —" :
+                marketStatus + " " + DATA_TIME.format(Instant.parse(marketDate));
+        String ihsgLine = ihsgDate.isEmpty() ? "IHSG —" : "IHSG " + ihsgDate
+                + (ihsgStatus.isEmpty() ? "" : " (" + ihsgStatus.toLowerCase(Locale.US) + ")");
+        views.setTextViewText(R.id.widgetStatus, marketLine + " · " + ihsgLine);
+        return views;
     }
 
     private static JSONObject getJson(String endpoint) throws Exception {
         HttpURLConnection conn = (HttpURLConnection) new URL(endpoint).openConnection();
-        conn.setConnectTimeout(15000);
-        conn.setReadTimeout(15000);
-        conn.setRequestProperty("Accept", "application/json");
-        conn.setRequestProperty("User-Agent", "HANZ-Trade-Android/2.1");
-        int code = conn.getResponseCode();
-        if (code < 200 || code >= 300) throw new IllegalStateException("HTTP " + code);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        StringBuilder body = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) body.append(line);
-        reader.close();
-        conn.disconnect();
-        return new JSONObject(body.toString());
+        try {
+            conn.setConnectTimeout(2500);
+            conn.setReadTimeout(2500);
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("User-Agent", "HANZ-Trade-Android/2.2");
+            int code = conn.getResponseCode();
+            if (code < 200 || code >= 300) throw new IllegalStateException("HTTP " + code);
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    conn.getInputStream(), java.nio.charset.StandardCharsets.UTF_8))) {
+                StringBuilder body = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) body.append(line);
+                return new JSONObject(body.toString());
+            }
+        } finally {
+            conn.disconnect();
+        }
     }
 
     private void setMarket(RemoteViews views, int valueId, int changeId, JSONObject item,
@@ -138,6 +167,7 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         applyOne(views, p, R.id.aedIdrValue, R.id.aedIdrChange, "aed");
         applyOne(views, p, R.id.uaeGoldValue, R.id.uaeGoldChange, "uae_gold");
         applyOne(views, p, R.id.antamValue, R.id.antamChange, "antam");
+        applyOne(views, p, R.id.ihsgValue, R.id.ihsgChange, "ihsg");
         views.setTextViewText(R.id.beiCandidates, p.getString("candidates", "No candidates"));
     }
 
