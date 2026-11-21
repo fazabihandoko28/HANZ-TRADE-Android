@@ -2,6 +2,11 @@ name: Update IHSG Snapshot
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ihsg.yml'
+      - 'scripts/update-ihsg.mjs'
   schedule:
     # IDX trading-day snapshots in UTC: 02:00, 05:00, 08:00, 09:15 = 09:00, 12:00, 15:00, 16:15 WIB
     - cron: '0 2 * * 1-5'
@@ -37,4 +42,5 @@ jobs:
           git config user.email 'hanz-bot@users.noreply.github.com'
           git add public/ihsg.json
           git commit -m 'Update IHSG snapshot'
-          git push
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

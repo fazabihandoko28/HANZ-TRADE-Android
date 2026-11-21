@@ -75,8 +75,14 @@
         android:id="@+id/widgetStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
+        android:paddingTop="4dp"
         android:text="Tap ↻ to update"
         android:textColor="#71839D"
+        android:textSize="9sp" />
+    <TextView
+        android:id="@+id/widgetLastCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#91A0B6"
         android:textSize="9sp" />
 </LinearLayout>

@@ -1,8 +1,14 @@
 name: Update HANZ market data
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/update-widget-data.yml'
+      - 'scripts/update-widget-data.mjs'
   schedule:
     - cron: '7,37 * * * *'
+    - cron: '22,52 * * * *'
 permissions:
   contents: write
 concurrency:

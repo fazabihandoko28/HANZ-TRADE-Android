@@ -119,6 +119,8 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         String ihsgLine = ihsgDate.isEmpty() ? "IHSG —" : "IHSG " + ihsgDate
                 + (ihsgStatus.isEmpty() ? "" : " (" + ihsgStatus.toLowerCase(Locale.US) + ")");
         views.setTextViewText(R.id.widgetStatus, marketLine + " · " + ihsgLine);
+        views.setTextViewText(R.id.widgetLastCheck,
+                "Checked " + DATA_TIME.format(Instant.now()));
         return views;
     }
 

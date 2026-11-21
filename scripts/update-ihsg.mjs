@@ -55,6 +55,9 @@ try {
   };
 
   validate(payload);
+  if (Number(existing.close) > 0 && existing.market_date > marketDate) {
+    throw new Error(`Source returned older IHSG session ${marketDate}; stored session is ${existing.market_date}`);
+  }
   await fs.writeFile(OUTPUT, JSON.stringify(payload, null, 2) + '\n');
   console.log(`IHSG ${marketDate}: ${close} (${change >= 0 ? '+' : ''}${change}, ${changePct >= 0 ? '+' : ''}${changePct}%)`);
 } catch (err) {
@@ -62,7 +65,7 @@ try {
     const fallback = {
       ...existing,
       status: 'last_known_good',
-      updated_at: now.toISOString(),
+      checked_at: now.toISOString(),
       stale: true,
       error: String(err?.message || err)
     };
