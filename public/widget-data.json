@@ -2,7 +2,7 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-21T12:56:27.142Z",
+  "updated": "2026-11-21T19:50:46.496Z",
   "comparison_date": "2026-11-20",
   "usd_idr": {
     "price": 18258,
@@ -39,9 +39,9 @@
     "quote_type": "retail"
   },
   "antam_gold_1g": {
-    "price": 2500000,
+    "price": 2495000,
     "previous": 2500000,
-    "change_pct": 0,
+    "change_pct": -0.2,
     "unit": "IDR/1g",
     "source": "HargaEmas.com ANTAM listing",
     "status": "live",
