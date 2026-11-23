@@ -10,6 +10,6 @@
   "source": "Yahoo Finance chart API",
   "updated_at": "2026-11-23T15:41:33.979Z",
   "stale": true,
-  "checked_at": "2026-11-23T19:41:50.277Z",
+  "checked_at": "2026-11-23T21:16:23.692Z",
   "error": "Source returned older IHSG session 2026-11-20; stored session is 2026-11-23"
 }
