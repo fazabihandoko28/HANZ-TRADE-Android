@@ -2,10 +2,10 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-23T09:55:31.099Z",
+  "updated": "2026-11-23T10:35:34.116Z",
   "comparison_date": "2026-11-22",
   "usd_idr": {
-    "price": 18260,
+    "price": 18259,
     "previous": 18258,
     "change_pct": 0.01,
     "unit": "IDR",
@@ -16,7 +16,7 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4972.09,
+    "price": 4971.82,
     "previous": 4971.55,
     "change_pct": 0.01,
     "unit": "IDR",
