@@ -124,6 +124,13 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
             }
             JSONObject quote = new JSONObject().put("price", price).put("change_pct", change);
             setMarket(views, R.id.btcUsdValue, R.id.btcUsdChange, quote, "$", 0, context, "btc");
+            try {
+                JSONArray history = getJson("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=90").getJSONArray("prices");
+                String forecast = btcForecast(history, price);
+                views.setTextViewText(R.id.btcForecast, forecast);
+            } catch (Exception ignored) {
+                views.setTextViewText(R.id.btcForecast, "BTC forecast unavailable");
+            }
         } catch (Exception ignored) {
             // Preserve the last BTC quote when its source is unavailable.
         }
@@ -136,6 +143,37 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         views.setTextViewText(R.id.widgetLastCheck,
                 "Checked " + DATA_TIME.format(Instant.now()));
         return views;
+    }
+
+    private static String btcForecast(JSONArray history, double price) throws Exception {
+        int n = history.length();
+        if (n < 61) throw new IllegalStateException("Insufficient history");
+        double[] values = new double[n];
+        long previous = 0;
+        for (int i = 0; i < n; i++) {
+            JSONArray point = history.getJSONArray(i);
+            long time = point.getLong(0);
+            values[i] = point.getDouble(1);
+            if (time <= previous || !Double.isFinite(values[i]) || values[i] <= 0)
+                throw new IllegalStateException("Invalid history");
+            previous = time;
+        }
+        if (Math.abs(System.currentTimeMillis() - previous) > 172800000L)
+            throw new IllegalStateException("Stale history");
+        // Exclude the final potentially incomplete daily observation.
+        int end = n - 2;
+        StringBuilder out = new StringBuilder("BTC estimate (experimental)");
+        for (int h : new int[]{1, 7, 30}) {
+            double[] returns = new double[ end - h + 1 ];
+            for (int i = h; i <= end; i++) returns[i-h] = Math.log(values[i]/values[i-h]);
+            java.util.Arrays.sort(returns);
+            int m = returns.length;
+            double median = (returns[(m-1)/2] + returns[m/2])/2;
+            double estimate = price * Math.exp(median);
+            if (!Double.isFinite(estimate) || estimate <= 0) throw new IllegalStateException("Invalid estimate");
+            out.append("\n").append(h == 1 ? "24h" : h + "d").append(": $").append(format(estimate, 0));
+        }
+        return out.toString();
     }
 
     private static JSONObject getJson(String endpoint) throws Exception {
