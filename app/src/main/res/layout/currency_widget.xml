@@ -92,5 +92,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#91A0B6"
-        android:textSize="9sp" />
+        android:textSize="8sp" />
 </LinearLayout>

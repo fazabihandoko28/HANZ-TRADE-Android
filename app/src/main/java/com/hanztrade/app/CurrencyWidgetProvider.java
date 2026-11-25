@@ -25,6 +25,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class CurrencyWidgetProvider extends AppWidgetProvider {
     public static final String ACTION_REFRESH = "com.hanztrade.app.REFRESH_WIDGET";
@@ -34,6 +36,8 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
             DateTimeFormatter.ofPattern("dd MMM HH:mm", Locale.ENGLISH).withZone(ZoneId.systemDefault());
     private static final String PREFS = "hanz_widget_cache";
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
+    private static final ExecutorService FETCH_EXECUTOR = Executors.newFixedThreadPool(4);
+    private static final long FETCH_TIMEOUT_MS = 7600;
     private static final int GREEN = Color.rgb(45, 196, 125);
     private static final int RED = Color.rgb(255, 92, 106);
     private static final int NEUTRAL = Color.rgb(145, 160, 182);
@@ -68,12 +72,24 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         var cache = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         String marketDate = cache.getString("market_data_time", "");
         String ihsgDate = cache.getString("ihsg_date", "");
-        String marketStatus = "Cached";
-        String ihsgStatus = "Cached";
+        String marketStatus = "CACHED";
+        String ihsgStatus = "CACHED";
+        String btcStatus = "CACHED";
+        String forecastStatus = "—";
+
+        Future<JSONObject> marketRequest = FETCH_EXECUTOR.submit(
+                () -> getJson(DATA_ROOT + "widget-data.json"));
+        Future<JSONObject> ihsgRequest = FETCH_EXECUTOR.submit(
+                () -> getJson(DATA_ROOT + "ihsg.json"));
+        Future<JSONObject> btcRequest = FETCH_EXECUTOR.submit(() -> getJson(
+                "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true"));
+        Future<JSONObject> historyRequest = FETCH_EXECUTOR.submit(() -> getJson(
+                "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=90"));
+        long fetchDeadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(FETCH_TIMEOUT_MS);
 
         try {
-            JSONObject root = getJson(DATA_ROOT + "widget-data.json");
-            if (!root.getBoolean("ok")) throw new IllegalStateException("Market feed unavailable");
+            JSONObject root = awaitJson(marketRequest, fetchDeadline);
+            if (root == null || !root.getBoolean("ok")) throw new IllegalStateException("Market feed unavailable");
             Instant snapshot = Instant.parse(root.getString("updated"));
             if (!marketDate.isEmpty() && snapshot.isBefore(Instant.parse(marketDate))) {
                 throw new IllegalStateException("Older market snapshot");
@@ -89,15 +105,17 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
             String candidates = candidateText(root.optJSONArray("bei_candidates"));
             views.setTextViewText(R.id.beiCandidates, candidates);
             marketDate = snapshot.toString();
-            marketStatus = root.optBoolean("partial") ? "Partial" : "Data";
+            boolean tooOld = snapshot.isBefore(Instant.now().minusSeconds(3 * 60 * 60));
+            marketStatus = tooOld ? "STALE" : (root.optBoolean("partial") ? "PARTIAL" : "OK");
             cache.edit().putString("candidates", candidates)
                     .putString("market_data_time", marketDate).apply();
         } catch (Exception ignored) {
-            // Keep the last available values when the market feed fails.
+            marketStatus = "CACHED";
         }
 
         try {
-            JSONObject index = getJson(DATA_ROOT + "ihsg.json");
+            JSONObject index = awaitJson(ihsgRequest, fetchDeadline);
+            if (index == null) throw new IllegalStateException("IHSG feed unavailable");
             LocalDate date = LocalDate.parse(index.getString("market_date"));
             double close = index.getDouble("close");
             double change = index.getDouble("change_pct");
@@ -108,15 +126,17 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
             JSONObject quote = new JSONObject().put("price", close).put("change_pct", change);
             setMarket(views, R.id.ihsgValue, R.id.ihsgChange, quote, "", 2, context, "ihsg");
             ihsgDate = date.toString();
-            ihsgStatus = index.optBoolean("stale") ? "Cached" : "";
+            ihsgStatus = index.optBoolean("stale") ? "STALE" : "OK";
             cache.edit().putString("ihsg_date", ihsgDate).apply();
         } catch (Exception ignored) {
-            // IHSG and the market feed can refresh independently.
+            ihsgStatus = "CACHED";
         }
 
+        JSONObject btc = null;
         try {
-            JSONObject btc = getJson("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true")
-                    .getJSONObject("bitcoin");
+            JSONObject root = awaitJson(btcRequest, fetchDeadline);
+            if (root == null) throw new IllegalStateException("BTC feed unavailable");
+            btc = root.getJSONObject("bitcoin");
             double price = btc.getDouble("usd");
             double change = btc.getDouble("usd_24h_change");
             if (!Double.isFinite(price) || price <= 0 || !Double.isFinite(change)) {
@@ -124,65 +144,57 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
             }
             JSONObject quote = new JSONObject().put("price", price).put("change_pct", change);
             setMarket(views, R.id.btcUsdValue, R.id.btcUsdChange, quote, "$", 0, context, "btc");
-            try {
-                JSONArray history = getJson("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=90").getJSONArray("prices");
-                String forecast = btcForecast(history, price);
-                views.setTextViewText(R.id.btcForecast, forecast);
-            } catch (Exception ignored) {
-                views.setTextViewText(R.id.btcForecast, "BTC forecast unavailable");
-            }
+            btcStatus = "LIVE";
         } catch (Exception ignored) {
-            // Preserve the last BTC quote when its source is unavailable.
+            btcStatus = "CACHED";
+        }
+
+        try {
+            JSONObject history = awaitJson(historyRequest, fetchDeadline);
+            if (history == null || btc == null) throw new IllegalStateException("BTC forecast feed unavailable");
+            String forecast = btcForecast(history.getJSONArray("prices"), btc.getDouble("usd"));
+            views.setTextViewText(R.id.btcForecast, forecast);
+            forecastStatus = "OK";
+        } catch (Exception ignored) {
+            views.setTextViewText(R.id.btcForecast, "BTC estimate unavailable");
+            forecastStatus = "UNAVAILABLE";
         }
 
         String marketLine = marketDate.isEmpty() ? "Market —" :
-                marketStatus + " " + DATA_TIME.format(Instant.parse(marketDate));
-        String ihsgLine = ihsgDate.isEmpty() ? "IHSG —" : "IHSG " + ihsgDate
-                + (ihsgStatus.isEmpty() ? "" : " (" + ihsgStatus.toLowerCase(Locale.US) + ")");
+                "Data " + DATA_TIME.format(Instant.parse(marketDate));
+        String ihsgLine = ihsgDate.isEmpty() ? "IHSG —" : "IHSG " + ihsgDate;
         views.setTextViewText(R.id.widgetStatus, marketLine + " · " + ihsgLine);
         views.setTextViewText(R.id.widgetLastCheck,
-                "Checked " + DATA_TIME.format(Instant.now()));
+                "Checked " + DATA_TIME.format(Instant.now()) + " · Market " + marketStatus
+                        + " · IHSG " + ihsgStatus + " · BTC " + btcStatus
+                        + " · Est " + forecastStatus);
         return views;
     }
 
-    private static String btcForecast(JSONArray history, double price) throws Exception {
-        int n = history.length();
-        if (n < 61) throw new IllegalStateException("Insufficient history");
-        double[] values = new double[n];
-        long previous = 0;
-        for (int i = 0; i < n; i++) {
-            JSONArray point = history.getJSONArray(i);
-            long time = point.getLong(0);
-            values[i] = point.getDouble(1);
-            if (time <= previous || !Double.isFinite(values[i]) || values[i] <= 0)
-                throw new IllegalStateException("Invalid history");
-            previous = time;
+    private static JSONObject awaitJson(Future<JSONObject> request) {
+        try {
+            return request.get(FETCH_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+        } catch (Exception ignored) {
+            request.cancel(true);
+            return null;
         }
-        if (Math.abs(System.currentTimeMillis() - previous) > 172800000L)
-            throw new IllegalStateException("Stale history");
-        // Exclude the final potentially incomplete daily observation.
-        int end = n - 2;
-        StringBuilder out = new StringBuilder("BTC estimate (experimental)");
-        for (int h : new int[]{1, 7, 30}) {
-            double[] returns = new double[ end - h + 1 ];
-            for (int i = h; i <= end; i++) returns[i-h] = Math.log(values[i]/values[i-h]);
-            java.util.Arrays.sort(returns);
-            int m = returns.length;
-            double median = (returns[(m-1)/2] + returns[m/2])/2;
-            double estimate = price * Math.exp(median);
-            if (!Double.isFinite(estimate) || estimate <= 0) throw new IllegalStateException("Invalid estimate");
-            out.append("\n").append(h == 1 ? "24h" : h + "d").append(": $").append(format(estimate, 0));
-        }
-        return out.toString();
     }
 
     private static JSONObject getJson(String endpoint) throws Exception {
-        HttpURLConnection conn = (HttpURLConnection) new URL(endpoint).openConnection();
+        String requestUrl = endpoint;
+        if (endpoint.startsWith(DATA_ROOT)) {
+            requestUrl += (endpoint.contains("?") ? "&" : "?")
+                    + "refresh=" + System.currentTimeMillis();
+        }
+        HttpURLConnection conn = (HttpURLConnection) new URL(requestUrl).openConnection();
         try {
-            conn.setConnectTimeout(2500);
-            conn.setReadTimeout(2500);
+            conn.setConnectTimeout(6000);
+            conn.setReadTimeout(6000);
+            conn.setUseCaches(false);
             conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestProperty("User-Agent", "HANZ-Trade-Android/2.2");
+            conn.setRequestProperty("Cache-Control", "no-cache, no-store, max-age=0");
+            conn.setRequestProperty("Pragma", "no-cache");
+            conn.setRequestProperty("User-Agent", "HANZ-Trade-Android/2.6");
             int code = conn.getResponseCode();
             if (code < 200 || code >= 300) throw new IllegalStateException("HTTP " + code);
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(
@@ -195,6 +207,46 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         } finally {
             conn.disconnect();
         }
+    }
+
+    private static String btcForecast(JSONArray history, double price) throws Exception {
+        int n = history.length();
+        if (n < 722) throw new IllegalStateException("Insufficient hourly history");
+        double[] values = new double[n];
+        long[] times = new long[n];
+        for (int i = 0; i < n; i++) {
+            JSONArray point = history.getJSONArray(i);
+            times[i] = point.getLong(0);
+            values[i] = point.getDouble(1);
+            if (!Double.isFinite(values[i]) || values[i] <= 0
+                    || (i > 0 && times[i] <= times[i - 1])) {
+                throw new IllegalStateException("Invalid BTC history");
+            }
+        }
+        int end = n - 2;
+        if (System.currentTimeMillis() - times[end] > 172800000L) {
+            throw new IllegalStateException("Stale BTC history");
+        }
+
+        StringBuilder out = new StringBuilder("BTC estimate (experimental)");
+        int[] horizonsHours = {24, 168, 720};
+        String[] labels = {"24h", "7d", "30d"};
+        for (int h = 0; h < horizonsHours.length; h++) {
+            int lag = horizonsHours[h];
+            double[] returns = new double[end - lag + 1];
+            for (int i = lag; i <= end; i++) {
+                returns[i - lag] = Math.log(values[i] / values[i - lag]);
+            }
+            java.util.Arrays.sort(returns);
+            int count = returns.length;
+            double median = (returns[(count - 1) / 2] + returns[count / 2]) / 2;
+            double estimate = price * Math.exp(median);
+            if (!Double.isFinite(estimate) || estimate <= 0) {
+                throw new IllegalStateException("Invalid BTC estimate");
+            }
+            out.append("\\n").append(labels[h]).append(": $").append(format(estimate, 0));
+        }
+        return out.toString();
     }
 
     private void setMarket(RemoteViews views, int valueId, int changeId, JSONObject item,
