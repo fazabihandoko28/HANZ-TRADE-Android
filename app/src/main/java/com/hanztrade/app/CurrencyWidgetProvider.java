@@ -171,9 +171,11 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         return views;
     }
 
-    private static JSONObject awaitJson(Future<JSONObject> request) {
+    private static JSONObject awaitJson(Future<JSONObject> request, long deadline) {
         try {
-            return request.get(FETCH_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+            long remaining = deadline - System.nanoTime();
+            if (remaining <= 0) throw new java.util.concurrent.TimeoutException();
+            return request.get(remaining, TimeUnit.NANOSECONDS);
         } catch (Exception ignored) {
             request.cancel(true);
             return null;
