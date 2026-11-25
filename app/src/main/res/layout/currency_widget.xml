@@ -66,6 +66,8 @@
         <TextView android:id="@+id/btcUsdChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.9" android:gravity="end" android:text="—" android:textColor="#91A0B6" android:textStyle="bold" android:textSize="11sp"/>
     </LinearLayout>
 
+    <TextView android:id="@+id/btcForecast" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="BTC forecast unavailable" android:textColor="#F4F7FB" android:textSize="11sp" />
+
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="3dp">
         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.1" android:text="IHSG" android:textColor="#91A0B6" android:textSize="11sp"/>
         <TextView android:id="@+id/ihsgValue" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.25" android:gravity="end" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="13sp"/>
