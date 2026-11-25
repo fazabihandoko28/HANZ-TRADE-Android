@@ -114,6 +114,20 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
             // IHSG and the market feed can refresh independently.
         }
 
+        try {
+            JSONObject btc = getJson("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true")
+                    .getJSONObject("bitcoin");
+            double price = btc.getDouble("usd");
+            double change = btc.getDouble("usd_24h_change");
+            if (!Double.isFinite(price) || price <= 0 || !Double.isFinite(change)) {
+                throw new IllegalStateException("Invalid BTC quote");
+            }
+            JSONObject quote = new JSONObject().put("price", price).put("change_pct", change);
+            setMarket(views, R.id.btcUsdValue, R.id.btcUsdChange, quote, "$", 0, context, "btc");
+        } catch (Exception ignored) {
+            // Preserve the last BTC quote when its source is unavailable.
+        }
+
         String marketLine = marketDate.isEmpty() ? "Market —" :
                 marketStatus + " " + DATA_TIME.format(Instant.parse(marketDate));
         String ihsgLine = ihsgDate.isEmpty() ? "IHSG —" : "IHSG " + ihsgDate
@@ -170,6 +184,7 @@ public class CurrencyWidgetProvider extends AppWidgetProvider {
         applyOne(views, p, R.id.uaeGoldValue, R.id.uaeGoldChange, "uae_gold");
         applyOne(views, p, R.id.antamValue, R.id.antamChange, "antam");
         applyOne(views, p, R.id.ihsgValue, R.id.ihsgChange, "ihsg");
+        applyOne(views, p, R.id.btcUsdValue, R.id.btcUsdChange, "btc");
         views.setTextViewText(R.id.beiCandidates, p.getString("candidates", "No candidates"));
     }
 

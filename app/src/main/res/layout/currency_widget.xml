@@ -61,6 +61,12 @@
     </LinearLayout>
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="3dp">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.1" android:text="BTC/USD" android:textColor="#91A0B6" android:textSize="11sp"/>
+        <TextView android:id="@+id/btcUsdValue" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.25" android:gravity="end" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="13sp"/>
+        <TextView android:id="@+id/btcUsdChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.9" android:gravity="end" android:text="—" android:textColor="#91A0B6" android:textStyle="bold" android:textSize="11sp"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:paddingTop="3dp">
         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.1" android:text="IHSG" android:textColor="#91A0B6" android:textSize="11sp"/>
         <TextView android:id="@+id/ihsgValue" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1.25" android:gravity="end" android:text="—" android:textColor="#F4F7FB" android:textStyle="bold" android:textSize="13sp"/>
         <TextView android:id="@+id/ihsgChange" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.9" android:gravity="end" android:text="—" android:textColor="#91A0B6" android:textStyle="bold" android:textSize="11sp"/>
