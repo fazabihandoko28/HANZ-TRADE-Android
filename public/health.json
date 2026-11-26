@@ -1,16 +1,16 @@
 {
   "schema_version": 1,
   "overall": "OK",
-  "generated_at": "2026-11-25T21:56:21.840Z",
+  "generated_at": "2026-11-26T03:14:02.673Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
-      "source": "Frankfurter v2 (2026-11-25)",
+      "source": "Frankfurter v2 (2026-11-26)",
       "price_available": true
     },
     "aed_idr": {
       "status": "live",
-      "source": "Frankfurter v2 derived (2026-11-25)",
+      "source": "Frankfurter v2 derived (2026-11-26)",
       "price_available": true
     },
     "uae_gold_24k": {
