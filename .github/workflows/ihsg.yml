@@ -8,11 +8,8 @@ on:
       - '.github/workflows/ihsg.yml'
       - 'scripts/update-ihsg.mjs'
   schedule:
-    # IDX trading-day snapshots in UTC: 02:00, 05:00, 08:00, 09:15 = 09:00, 12:00, 15:00, 16:15 WIB
-    - cron: '0 2 * * 1-5'
-    - cron: '0 5 * * 1-5'
-    - cron: '0 8 * * 1-5'
-    - cron: '15 9 * * 1-5'
+    # Hourly through the IDX trading session: 09:00–17:00 WIB
+    - cron: '0 2-10 * * 1-5'
 
 permissions:
   contents: write
