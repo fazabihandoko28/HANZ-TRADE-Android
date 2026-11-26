@@ -2,12 +2,12 @@
   "schema_version": 4,
   "ok": true,
   "partial": false,
-  "updated": "2026-11-26T13:45:01.663Z",
+  "updated": "2026-11-26T21:59:46.487Z",
   "comparison_date": "2026-11-25",
   "usd_idr": {
-    "price": 18301,
+    "price": 18324,
     "previous": 18269,
-    "change_pct": 0.18,
+    "change_pct": 0.3,
     "unit": "IDR",
     "source": "Frankfurter v2 (2026-11-26)",
     "status": "live",
@@ -16,9 +16,9 @@
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4983.25,
+    "price": 4989.52,
     "previous": 4974.54,
-    "change_pct": 0.18,
+    "change_pct": 0.3,
     "unit": "IDR",
     "source": "Frankfurter v2 derived (2026-11-26)",
     "status": "live",
@@ -27,9 +27,9 @@
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 429.5,
-    "previous": 430.5,
-    "change_pct": -0.23,
+    "price": 430.25,
+    "previous": 430.25,
+    "change_pct": 0,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
     "status": "live",
