@@ -54,6 +54,11 @@ try {
   console.log(`IHSG ${marketDate}: ${close} (${change >= 0 ? '+' : ''}${change}, ${changePct >= 0 ? '+' : ''}${changePct}%)`);
 } catch (err) {
   if (Number(existing?.close) > 0 && existing?.market_date) {
+    try {
+      validate(existing);
+    } catch (auditError) {
+      throw new Error(`Source failed and stored IHSG snapshot failed audit: ${auditError.message}`);
+    }
     const fallback = {
       ...existing,
       status: 'last_known_good',
@@ -104,7 +109,7 @@ function toJakartaDate(ms) {
 
 function round2(n) { return Math.round((n + Number.EPSILON) * 100) / 100; }
 function validate(p) {
-  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(p.market_date ?? '')) throw new Error('Invalid IHSG market date');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(p.market_date ?? '')) throw new Error('Invalid IHSG market date');
   if (!(p.close > 1000 && p.close < 20000)) throw new Error(`Implausible IHSG close ${p.close}`);
   if (!(p.previous_close > 1000 && p.previous_close < 20000)) throw new Error(`Implausible previous close ${p.previous_close}`);
   const expectedChange = round2(p.close - p.previous_close);
