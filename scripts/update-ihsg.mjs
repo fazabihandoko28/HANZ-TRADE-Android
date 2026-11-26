@@ -12,16 +12,8 @@ let existing = {};
 try { existing = JSON.parse(await fs.readFile(OUTPUT, 'utf8')); } catch {}
 
 try {
-  const res = await fetch(URL, {
-    headers: {
-      'user-agent': 'Mozilla/5.0 HANZ-Trade-IHSG/1.0',
-      'accept': 'application/json'
-    }
-  });
-  if (!res.ok) throw new Error(`Yahoo HTTP ${res.status}`);
-  const json = await res.json();
-  const result = json?.chart?.result?.[0];
-  if (!result) throw new Error(json?.chart?.error?.description || 'No chart result');
+  const result = await fetchChartWithRetry();
+  const json = { chart: { result: [result] } };
 
   const ts = result.timestamp || [];
   const quote = result.indicators?.quote?.[0] || {};
@@ -76,6 +68,32 @@ try {
   }
 }
 
+async function fetchChartWithRetry() {
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const res = await fetch(URL, {
+        headers: {
+          'user-agent': 'Mozilla/5.0 HANZ-Trade-IHSG/1.0',
+          'accept': 'application/json',
+          'cache-control': 'no-cache'
+        },
+        signal: AbortSignal.timeout(20000)
+      });
+      if (!res.ok) throw new Error(`Yahoo HTTP ${res.status}`);
+      const json = await res.json();
+      const result = json?.chart?.result?.[0];
+      if (!result) throw new Error(json?.chart?.error?.description || 'No chart result');
+      return result;
+    } catch (error) {
+      lastError = error;
+      console.warn(`IHSG source attempt ${attempt}/3 failed: ${error?.message || error}`);
+      if (attempt < 3) await new Promise(resolve => setTimeout(resolve, attempt * 2000));
+    }
+  }
+  throw lastError;
+}
+
 function toJakartaDate(ms) {
   const parts = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit'
@@ -86,7 +104,12 @@ function toJakartaDate(ms) {
 
 function round2(n) { return Math.round((n + Number.EPSILON) * 100) / 100; }
 function validate(p) {
+  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(p.market_date ?? '')) throw new Error('Invalid IHSG market date');
   if (!(p.close > 1000 && p.close < 20000)) throw new Error(`Implausible IHSG close ${p.close}`);
   if (!(p.previous_close > 1000 && p.previous_close < 20000)) throw new Error(`Implausible previous close ${p.previous_close}`);
+  const expectedChange = round2(p.close - p.previous_close);
+  const expectedPct = round2((expectedChange / p.previous_close) * 100);
+  if (p.change !== expectedChange) throw new Error(`IHSG change mismatch: ${p.change} vs ${expectedChange}`);
+  if (p.change_pct !== expectedPct) throw new Error(`IHSG percentage mismatch: ${p.change_pct} vs ${expectedPct}`);
   if (Math.abs(p.change_pct) > 20) throw new Error(`Implausible IHSG daily change ${p.change_pct}%`);
 }
