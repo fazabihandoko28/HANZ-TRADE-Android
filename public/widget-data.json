@@ -1,35 +1,35 @@
 {
   "schema_version": 4,
   "ok": true,
-  "partial": false,
-  "updated": "2026-11-26T22:54:45.932Z",
-  "comparison_date": "2026-11-25",
+  "partial": true,
+  "updated": "2026-11-27T04:19:59.399Z",
+  "comparison_date": "2026-11-26",
   "usd_idr": {
-    "price": 18324,
-    "previous": 18269,
-    "change_pct": 0.3,
+    "price": 18333,
+    "previous": 18324,
+    "change_pct": 0.05,
     "unit": "IDR",
-    "source": "Frankfurter v2 (2026-11-26)",
+    "source": "Frankfurter v2 (2026-11-27)",
     "status": "live",
     "live": true,
     "verified": true,
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4989.52,
-    "previous": 4974.54,
-    "change_pct": 0.3,
+    "price": 4991.97,
+    "previous": 4989.52,
+    "change_pct": 0.05,
     "unit": "IDR",
-    "source": "Frankfurter v2 derived (2026-11-26)",
+    "source": "Frankfurter v2 derived (2026-11-27)",
     "status": "live",
     "live": true,
     "verified": true,
     "provider_count": 1
   },
   "uae_gold_24k": {
-    "price": 430.25,
+    "price": 437.5,
     "previous": 430.25,
-    "change_pct": 0,
+    "change_pct": 1.69,
     "unit": "AED/g",
     "source": "Gulf News / Dubai Gold & Jewellery Group retail",
     "status": "live",
@@ -40,12 +40,12 @@
   },
   "antam_gold_1g": {
     "price": 2501000,
-    "previous": 2499000,
-    "change_pct": 0.08,
+    "previous": 2501000,
+    "change_pct": 0,
     "unit": "IDR/1g",
-    "source": "HargaEmas.com ANTAM listing",
-    "status": "live",
-    "live": true,
+    "source": "Last known good: HargaEmas.com ANTAM listing",
+    "status": "stale",
+    "live": false,
     "verified": true,
     "provider_count": 1
   },
@@ -65,6 +65,24 @@
       "message": "success"
     },
     {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOpenSourceApi",
+      "message": "Invalid Logam Mulia API response"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamOfficial",
+      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
+    },
+    {
+      "level": "warning",
+      "group": "ANTAM",
+      "provider": "fetchAntamHargaEmasCom",
+      "message": "Unable to parse ANTAM 1g price"
+    },
+    {
       "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeRetailGulfNews",
@@ -80,24 +98,6 @@
       "level": "info",
       "group": "UAE gold",
       "provider": "fetchUaeSpotHargaEmas",
-      "message": "success"
-    },
-    {
-      "level": "warning",
-      "group": "ANTAM",
-      "provider": "fetchAntamOpenSourceApi",
-      "message": "Invalid Logam Mulia API response"
-    },
-    {
-      "level": "warning",
-      "group": "ANTAM",
-      "provider": "fetchAntamOfficial",
-      "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
-    },
-    {
-      "level": "info",
-      "group": "ANTAM",
-      "provider": "fetchAntamHargaEmasCom",
       "message": "success"
     }
   ]
