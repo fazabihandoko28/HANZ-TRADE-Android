@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "overall": "DEGRADED",
-  "generated_at": "2026-11-28T13:17:56.939Z",
+  "generated_at": "2026-11-28T14:00:12.205Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
@@ -20,7 +20,7 @@
     },
     "antam_gold_1g": {
       "status": "stale",
-      "source": "Last known good: HargaEmas.com ANTAM listing",
+      "source": "Last known good: Last known good: HargaEmas.com ANTAM listing",
       "price_available": true
     }
   },

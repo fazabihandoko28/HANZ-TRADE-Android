@@ -2,7 +2,7 @@
   "schema_version": 4,
   "ok": true,
   "partial": true,
-  "updated": "2026-11-28T13:17:56.939Z",
+  "updated": "2026-11-28T14:00:12.205Z",
   "comparison_date": "2026-11-27",
   "usd_idr": {
     "price": 18343,
@@ -43,7 +43,7 @@
     "previous": 2514000,
     "change_pct": 0,
     "unit": "IDR/1g",
-    "source": "Last known good: HargaEmas.com ANTAM listing",
+    "source": "Last known good: Last known good: HargaEmas.com ANTAM listing",
     "status": "stale",
     "live": false,
     "verified": true,
