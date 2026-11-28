@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "overall": "DEGRADED",
-  "generated_at": "2026-11-28T04:19:36.526Z",
+  "overall": "OK",
+  "generated_at": "2026-11-28T04:54:22.917Z",
   "market_data": {
     "usd_idr": {
       "status": "live",
@@ -19,8 +19,8 @@
       "price_available": true
     },
     "antam_gold_1g": {
-      "status": "stale",
-      "source": "Last known good: HargaEmas.com ANTAM listing",
+      "status": "live",
+      "source": "HargaEmas.com ANTAM listing",
       "price_available": true
     }
   },
@@ -73,10 +73,10 @@
       "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
-      "message": "Unable to parse ANTAM 1g price"
+      "message": "success"
     }
   ]
 }

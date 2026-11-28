@@ -1,8 +1,8 @@
 {
   "schema_version": 4,
   "ok": true,
-  "partial": true,
-  "updated": "2026-11-28T04:19:36.526Z",
+  "partial": false,
+  "updated": "2026-11-28T04:54:22.917Z",
   "comparison_date": "2026-11-27",
   "usd_idr": {
     "price": 18341,
@@ -43,9 +43,9 @@
     "previous": 2514000,
     "change_pct": 0,
     "unit": "IDR/1g",
-    "source": "Last known good: HargaEmas.com ANTAM listing",
-    "status": "stale",
-    "live": false,
+    "source": "HargaEmas.com ANTAM listing",
+    "status": "live",
+    "live": true,
     "verified": true,
     "provider_count": 1
   },
@@ -95,10 +95,10 @@
       "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
     },
     {
-      "level": "warning",
+      "level": "info",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
-      "message": "Unable to parse ANTAM 1g price"
+      "message": "success"
     }
   ]
 }
