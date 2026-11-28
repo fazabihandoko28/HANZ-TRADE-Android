@@ -1,26 +1,26 @@
 {
   "schema_version": 4,
   "ok": true,
-  "partial": false,
-  "updated": "2026-11-27T23:20:19.094Z",
-  "comparison_date": "2026-11-26",
+  "partial": true,
+  "updated": "2026-11-28T04:19:36.526Z",
+  "comparison_date": "2026-11-27",
   "usd_idr": {
-    "price": 18339,
-    "previous": 18324,
-    "change_pct": 0.08,
+    "price": 18341,
+    "previous": 18339,
+    "change_pct": 0.01,
     "unit": "IDR",
-    "source": "Frankfurter v2 (2026-11-27)",
+    "source": "Frankfurter v2 (2026-11-28)",
     "status": "live",
     "live": true,
     "verified": true,
     "provider_count": 1
   },
   "aed_idr": {
-    "price": 4993.6,
-    "previous": 4989.52,
-    "change_pct": 0.08,
+    "price": 4994.15,
+    "previous": 4993.6,
+    "change_pct": 0.01,
     "unit": "IDR",
-    "source": "Frankfurter v2 derived (2026-11-27)",
+    "source": "Frankfurter v2 derived (2026-11-28)",
     "status": "live",
     "live": true,
     "verified": true,
@@ -40,12 +40,12 @@
   },
   "antam_gold_1g": {
     "price": 2514000,
-    "previous": 2501000,
-    "change_pct": 0.52,
+    "previous": 2514000,
+    "change_pct": 0,
     "unit": "IDR/1g",
-    "source": "HargaEmas.com ANTAM listing",
-    "status": "live",
-    "live": true,
+    "source": "Last known good: HargaEmas.com ANTAM listing",
+    "status": "stale",
+    "live": false,
     "verified": true,
     "provider_count": 1
   },
@@ -95,10 +95,10 @@
       "message": "HTTP 403 https://www.logammulia.com/harga-emas-hari-ini"
     },
     {
-      "level": "info",
+      "level": "warning",
       "group": "ANTAM",
       "provider": "fetchAntamHargaEmasCom",
-      "message": "success"
+      "message": "Unable to parse ANTAM 1g price"
     }
   ]
 }
